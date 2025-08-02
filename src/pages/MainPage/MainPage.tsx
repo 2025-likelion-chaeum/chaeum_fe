@@ -1,5 +1,7 @@
+import * as M from './MainPage.styles';
+
 const MainPage = () => {
-  return <div>🏡 메인 페이지</div>;
+  return <M.MainPage>🏡 메인 페이지</M.MainPage>;
 };
 
 export default MainPage;

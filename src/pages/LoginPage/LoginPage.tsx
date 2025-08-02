@@ -1,5 +1,7 @@
+import * as L from './LoginPage.styles';
+
 const LoginPage = () => {
-  return <div>🏡 로그인 페이지</div>;
+  return <L.LoginPage>🏡 로그인 페이지</L.LoginPage>;
 };
 
 export default LoginPage;

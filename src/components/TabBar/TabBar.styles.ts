@@ -4,10 +4,8 @@ export const TabBar = styled.div`
   height: 56px;
   background-color: gainsboro;
 
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
 
   width: 100%;
 `;

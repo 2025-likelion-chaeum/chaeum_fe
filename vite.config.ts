@@ -54,6 +54,7 @@ export default defineConfig({
       { find: '@layouts', replacement: '/src/layouts' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@routes', replacement: '/src/routes' },
+      { find: '@styles', replacement: '/src/styles' },
       { find: '@types', replacement: '/src/types' },
       { find: '@utils', replacement: '/src/utils' },
     ],

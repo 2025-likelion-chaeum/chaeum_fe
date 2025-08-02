@@ -1,5 +1,7 @@
+import * as M from './MapPage.styles';
+
 const MyPage = () => {
-  return <div>🏡 마이페이지</div>;
+  return <M.MyPage>🏡 마이페이지</M.MyPage>;
 };
 
 export default MyPage;

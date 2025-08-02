@@ -1,5 +1,7 @@
+import * as D from './DetailPage.styles';
+
 const DetailPage = () => {
-  return <div>🏡 빈집 상세 페이지</div>;
+  return <D.DetailPage>🏡 빈집 상세 페이지</D.DetailPage>;
 };
 
 export default DetailPage;
