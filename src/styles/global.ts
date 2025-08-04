@@ -33,9 +33,14 @@ const global = css`
     font-display: swap;
   }
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   html,
   body {
-    box-sizing: border-box;
     font-family: 'Pretendard';
 
     background-color: #fff;
