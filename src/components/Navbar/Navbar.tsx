@@ -1,4 +1,4 @@
-import * as T from './TabBar.styles';
+import * as T from './Navbar.styles';
 import HomeOff from '@assets/icon-home-off.svg?react';
 import HomeOn from '@assets/icon-home-on.svg?react';
 import MapOn from '@assets/icon-map-on.svg?react';
@@ -8,7 +8,7 @@ import MyPageOn from '@assets/icon-mypage-on.svg?react';
 import MyPageOff from '@assets/icon-mypage-off.svg?react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const TabBar = () => {
+const Navbar = () => {
   const LINKS = [
     {
       to: '/',
@@ -68,4 +68,4 @@ const TabBar = () => {
   );
 };
 
-export default TabBar;
+export default Navbar;

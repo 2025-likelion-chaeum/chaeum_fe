@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import TabBar from '@components/TabBar/TabBar';
 import * as C from '@styles/common';
+import Navbar from '@/components/Navbar/Navbar';
 
 const HomeLayout = () => {
   return (
@@ -11,7 +11,7 @@ const HomeLayout = () => {
           <Outlet />
         </C.OuletWrapper>
       </Suspense>
-      <TabBar />
+      <Navbar />
     </C.Page>
   );
 };
