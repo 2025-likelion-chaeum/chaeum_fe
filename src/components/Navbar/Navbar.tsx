@@ -6,7 +6,7 @@ import MapOff from '@assets/icon-map-off.svg?react';
 import Create from '@assets/icon-create.svg?react';
 import MyPageOn from '@assets/icon-mypage-on.svg?react';
 import MyPageOff from '@assets/icon-mypage-off.svg?react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { matchPath, NavLink, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const LINKS = [
@@ -36,18 +36,12 @@ const Navbar = () => {
     },
   ];
 
-  const locations = useLocation();
+  const location = useLocation();
 
-  if (
-    locations.pathname === '/login' ||
-    locations.pathname === '/signup' ||
-    locations.pathname === '/onboarding' ||
-    locations.pathname === '/list' ||
-    locations.pathname === '/list/:id' ||
-    locations.pathname === '/upload'
-  ) {
-    return null;
-  }
+  const HIDDEN_ROUTES = ['/login', '/signup', '/onboarding', '/list', '/list/:id', '/upload'];
+  const isHideNavbar = HIDDEN_ROUTES.some((route) => matchPath(route, location.pathname));
+
+  if (isHideNavbar) return null;
 
   return (
     <T.TabBar>
