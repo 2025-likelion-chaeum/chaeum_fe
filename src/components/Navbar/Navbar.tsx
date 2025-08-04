@@ -38,7 +38,7 @@ const Navbar = () => {
 
   const location = useLocation();
 
-  const HIDDEN_ROUTES = ['/login', '/signup', '/onboarding', '/list', '/list/:id', '/upload'];
+  const HIDDEN_ROUTES = ['/login', '/signup', '/onboarding', '/list', '/list/:id', '/upload', '/mypage/account'];
   const isHideNavbar = HIDDEN_ROUTES.some((route) => matchPath(route, location.pathname));
 
   if (isHideNavbar) return null;

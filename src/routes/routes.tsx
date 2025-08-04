@@ -10,4 +10,5 @@ export const lazyRoutes = {
   DetailPage: React.lazy(() => import('../pages/DetailPage/DetailPage')),
   UploadPage: React.lazy(() => import('../pages/UploadPage/UploadPage')),
   MyPage: React.lazy(() => import('../pages/MyPage/MyPage')),
+  MyAccountPage: React.lazy(() => import('../pages/MyAccountPage/MyAccountPage')),
 };
