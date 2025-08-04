@@ -172,6 +172,18 @@ const global = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
 `;
 
 export default global;
