@@ -16,15 +16,14 @@ import * as I from './Input.styles';
  *
  * 2. mode="controlled"
  * @param {string} mode - "controlled"
- * @param {string} type -- input 타입
+ * @param {string} type -- input 타입 / 필수 X
  * @param {string} placeholder -- placeholder 내용
  * @param {string} value -- input의 value 값
  * @param {function} onChange -- input 값 변경 시 핸들러
- * @param {function} onKeyDown -- 엔터 등 키 입력 시 핸들러
- * @param {number} maxLength -- input의 최대 글자 수
- * @param {number} minLength -- input의 최소 글자 수
+ * @param {function} onKeyDown -- 엔터 등 키 입력 시 핸들러 / 필수 X
+ * @param {number} maxLength -- input의 최대 글자 수 / 필수 X
+ * @param {number} minLength -- input의 최소 글자 수 / 필수 X
  *  * controlled의 경우 input의 기본 타입은 text이며, 필요에 따라 타입을 지정할 수 있습니다.
- *  * type, onKeyDown, maxLength, minLength는 필수 값이 아니며, 필요에 따라 넘기면 됩니다.
  *  * ex) <Input
  *          mode="controlled"
  *          placeholder="금액을 작성해주세요"

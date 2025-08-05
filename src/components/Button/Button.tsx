@@ -5,8 +5,8 @@ import * as B from './Button.styles';
  *
  * @param {string} text -- 버튼 내용
  * @param {function} onClick -- 버튼 클릭 시 실행될 함수
- * @param {string} type -- 버튼의 타입
- * @param {boolean} disabled -- 버튼 비활성화 여부
+ * @param {'submit' | 'button'} type -- 버튼의 타입 / 필수 X
+ * @param {boolean} disabled -- 버튼 비활성화 여부 / 필수 X
  *
  * ex) <Button text="로그인" onClick={handleSubmit(onSubmit)} type="submit" disabled={isSubmitting} />
  *

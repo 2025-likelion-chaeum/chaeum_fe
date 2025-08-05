@@ -3,6 +3,7 @@ import palette from '@/styles/theme';
 
 export const InputWrapper = styled.div`
   padding: 0 20px;
+  width: 100%;
 `;
 
 export const Input = styled.input`
