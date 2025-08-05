@@ -20,6 +20,7 @@ export const routes: RouteObject[] = [
       { path: 'upload', element: <lazyRoutes.UploadPage /> },
       { path: 'mypage', element: <lazyRoutes.MyPage /> },
       { path: 'mypage/account', element: <lazyRoutes.MyAccountPage /> },
+      { path: 'test', element: <lazyRoutes.TestPage /> },
     ],
   },
 ];
