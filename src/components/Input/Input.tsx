@@ -61,10 +61,10 @@ type InputProps = RegisteredInputProps | ControlledInputProps;
 
 const Input = (props: InputProps) => {
   if (props.mode === 'registered') {
-    const { type, placeholder, register } = props;
+    const { type, placeholder, register, ...rest } = props;
     return (
       <I.InputWrapper>
-        <I.Input type={type} placeholder={placeholder} {...register} />
+        <I.Input type={type} placeholder={placeholder} {...register} {...rest} />
       </I.InputWrapper>
     );
   } else {
