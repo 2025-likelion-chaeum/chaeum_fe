@@ -48,7 +48,7 @@ const LoginPage = () => {
       return;
     }
 
-    navigate('/');
+    navigate('/onboarding');
   };
 
   return (
