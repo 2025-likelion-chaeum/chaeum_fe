@@ -128,7 +128,7 @@ const OnboardingPage = () => {
                 <O.Title>빈집을 활용하려는 목적이 무엇인가요?</O.Title>
                 <O.Explain>활용 목적이나 업종 등을 알려주면 그에 맞춰 빈집을 추천해드려요!</O.Explain>
                 <O.UserInput
-                  placeholder="카페, 편집숍, 예술, 공방 등 자유롭게 작성해주세요. 1인 거주나 반려동물 동반 등 디테일한 조건을 추가해도 좋아요!"
+                  placeholder={`카페, 편집숍, 예술, 공방 등 자유롭게 작성해주세요.\n1인 거주나 반려동물 동반 등 디테일한 조건을 추가해도 좋아요!`}
                   $height={127}
                   {...register('detailPurpose')}
                 />
