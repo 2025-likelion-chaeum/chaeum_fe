@@ -4,8 +4,11 @@ import Button from '@/components/Button/Button';
 import z from 'zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
 const OnboardingPage = () => {
+  const navigate = useNavigate();
+
   const schema = z.object({
     purpose: z.enum(['buy', 'sell', 'both']),
     utilize: z.array(z.string()),
@@ -26,8 +29,9 @@ const OnboardingPage = () => {
     mode: 'onChange',
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    navigate('/');
   };
 
   const watchPurpose = watch('purpose');
