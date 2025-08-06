@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 export const ButtonWrapper = styled.div`
   padding: 0 20px;
+  width: 100%;
 `;
 
 export const Button = styled.button`
