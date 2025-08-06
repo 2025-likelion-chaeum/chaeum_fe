@@ -7,8 +7,12 @@ import Arrow from '@assets/icon-arrow-right.svg?react';
 const MyPage = () => {
   const navigate = useNavigate();
 
-  const handleNavigate = (url: string) => {
-    navigate(url);
+  const handleNavigate = (url: string, text?: string) => {
+    navigate(url, {
+      state: {
+        text,
+      },
+    });
   };
 
   return (
@@ -27,12 +31,12 @@ const MyPage = () => {
       <M.Section>
         <M.Menu>빈집 목록</M.Menu>
 
-        <M.Wrapper onClick={() => handleNavigate('/list')} $pTop={12} $height={56}>
+        <M.Wrapper onClick={() => handleNavigate('/list', '내가 등록한 빈집')} $pTop={12} $height={56}>
           <M.SemiBold>내가 등록한 빈집</M.SemiBold>
           <Arrow />
         </M.Wrapper>
 
-        <M.Wrapper onClick={() => handleNavigate('/list')} $pTop={12} $height={56}>
+        <M.Wrapper onClick={() => handleNavigate('/list', '내가 스크랩한 빈집')} $pTop={12} $height={56}>
           <M.SemiBold>내가 스크랩한 빈집</M.SemiBold>
           <Arrow />
         </M.Wrapper>

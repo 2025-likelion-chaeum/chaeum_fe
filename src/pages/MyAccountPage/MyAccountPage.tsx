@@ -1,7 +1,11 @@
-import Topbar from '@/components/Topbar/Topbar';
+import { useNavigate } from 'react-router-dom';
+
 import * as M from './MyAccountPage.styles';
+import Topbar from '@/components/Topbar/Topbar';
 
 const MyAccountPage = () => {
+  const navigate = useNavigate();
+
   const myAccount = [
     {
       label: '이름',
@@ -34,7 +38,7 @@ const MyAccountPage = () => {
         </M.AccountWrapper>
 
         <M.ButtonWrapper>
-          <M.Button>로그아웃</M.Button>
+          <M.Button onClick={() => navigate('/login')}>로그아웃</M.Button>
         </M.ButtonWrapper>
       </M.MyAccountPage>
     </>
