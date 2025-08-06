@@ -167,7 +167,7 @@ const SignupPage = () => {
             text="가입하기"
             onClick={handleSubmit(onSubmit)}
             type="submit"
-            disabled={isSubmitting || !isAllFilled}
+            disabled={isSubmitting || !isAllFilled || Object.keys(errors).length > 0}
           />
         </S.ButtonWrapper>
       </S.PageContent>
