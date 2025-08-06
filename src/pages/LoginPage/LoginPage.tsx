@@ -33,7 +33,7 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     const user = {
       email: 'a@gmail.com',
-      password: '123123123',
+      password: '123a',
     };
 
     const isValidUser = data.email === user.email && data.password === user.password;

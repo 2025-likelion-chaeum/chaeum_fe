@@ -71,8 +71,6 @@ export const Error = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
-
-  height: 16.8px;
 `;
 
 export const SInput = styled(Input)<{ $isError: boolean }>`
