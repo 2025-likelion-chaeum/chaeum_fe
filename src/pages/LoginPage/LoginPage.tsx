@@ -22,6 +22,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    clearErrors,
   } = useForm<FormFields>({
     defaultValues: {
       email: '',
@@ -63,6 +64,7 @@ const LoginPage = () => {
             $isError={!!errors.email}
             mode="registered"
             register={register('email')}
+            onFocus={() => clearErrors(['email', 'password'])}
             type="email"
             placeholder="이메일"
           />
@@ -70,6 +72,7 @@ const LoginPage = () => {
             $isError={!!errors.password}
             mode="registered"
             register={register('password')}
+            onFocus={() => clearErrors(['email', 'password'])}
             type="password"
             placeholder="비밀번호"
           />
