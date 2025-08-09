@@ -4,6 +4,7 @@ import RecommandBox from './components/RecommandBox/RecommandBox';
 import exampleImg from '@assets/ex_recHome.svg';
 
 import { useState } from 'react';
+import HomeItem from './components/HomeItem/HomeItem';
 
 const MainPage = () => {
   const [region, setRegion] = useState<string>('');
@@ -55,6 +56,72 @@ const MainPage = () => {
     },
   ];
 
+  const HomeData = [
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+  ];
+
   return (
     <M.MainPage>
       <M.Group>
@@ -84,6 +151,25 @@ const MainPage = () => {
             />
           ))}
         </M.ReccomandList>
+      </M.Group>
+      <M.Group>
+        <M.Title>
+          <M.Semibold18>방금 등록된 따끈한 빈집들</M.Semibold18>
+          <M.Regular12>더 보러가기</M.Regular12>
+        </M.Title>
+        <M.HomeList>
+          {HomeData.map((item, idx) => (
+            <HomeItem
+              key={idx}
+              img={item.img}
+              type={item.type}
+              price={item.price}
+              region={item.region}
+              size={item.size}
+              onClick={() => console.log(`${item.type} 클릭됨`)}
+            />
+          ))}
+        </M.HomeList>
       </M.Group>
     </M.MainPage>
   );

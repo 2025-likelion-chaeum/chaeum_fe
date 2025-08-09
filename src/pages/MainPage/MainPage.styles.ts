@@ -39,3 +39,23 @@ export const ReccomandList = styled.div`
   width: 100%;
   overflow: scroll;
 `;
+
+export const Title = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Regular12 = styled.div`
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%;
+  color: ${palette.grayscale['5e']};
+`;
+
+export const HomeList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;

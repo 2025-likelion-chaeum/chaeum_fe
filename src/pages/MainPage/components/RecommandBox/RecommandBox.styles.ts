@@ -9,6 +9,19 @@ export const RecommandBox = styled.div`
   border: 1px solid ${palette.grayscale.eb};
 `;
 
+export const HomeItemBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-radius: 12px;
+  border: 1px solid ${palette.grayscale.eb};
+`;
+
+export const HomeImg = styled.img`
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  width: 104px;
+`;
+
 export const Img = styled.img`
   height: 160px;
   border-top-left-radius: 12px;
