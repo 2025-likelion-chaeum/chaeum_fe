@@ -85,6 +85,7 @@ const ListPage = () => {
       size: '대 200m²(60평)',
     },
   ];
+
   const category = [
     '시골농가주택',
     '전원주택',
@@ -96,23 +97,42 @@ const ListPage = () => {
     '공장/창고',
   ];
 
+  const method = ['매매', '임대', '전세', '월세', '단기'];
+
+  const price = [
+    '천만원 이상',
+    '천만원 이상 5천만원 미만',
+    '5천만원 이상 1억원 미만',
+    '1억원 이상 5억원 미만',
+    '5억원 이상 10억원 미만',
+    '10억원 이상',
+  ];
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
 
   const handleSelect = (item: string) => {
     setSelectedCategories((prev) => (prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]));
-    console.log(selectedCategories);
   };
 
-  //반영된 거 확인 용
-  useEffect(() => {
-    console.log(selectedCategories);
-  }, [selectedCategories]);
+  const handleSelectMethod = (item: string) => {
+    setSelectedMethods((prev) => (prev.includes(item) ? prev.filter((m) => m !== item) : [...prev, item]));
+  };
+
+  const handleSelectPrice = (item: string) => {
+    setSelectedPrices((prev) => (prev.includes(item) ? prev.filter((p) => p !== item) : [...prev, item]));
+  };
 
   return (
     <>
       <Topbar text={'전국의 빈집들'} style="none" />
       <L.ListPage>
-        <Dropdown text={'매물 종류'} array={category} onSelect={handleSelect} selected={selectedCategories} />
+        <L.DropdownContaioner>
+          <Dropdown text={'매물 종류'} array={category} onSelect={handleSelect} selected={selectedCategories} />
+          <Dropdown text="거래 방식" array={method} onSelect={handleSelectMethod} selected={selectedMethods} />
+          <Dropdown text="가격 범위" array={price} onSelect={handleSelectPrice} selected={selectedPrices} />
+        </L.DropdownContaioner>
         <L.HomeList>
           {HomeData.map((item, idx) => (
             <HomeItem

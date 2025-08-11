@@ -15,3 +15,9 @@ export const HomeList = styled.div`
   flex-direction: column;
   gap: 12px;
 `;
+
+export const DropdownContaioner = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
