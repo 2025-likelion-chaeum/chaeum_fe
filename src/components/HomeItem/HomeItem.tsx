@@ -1,4 +1,4 @@
-import * as R from '../RecommandBox/RecommandBox.styles';
+import * as R from '@pages/MainPage/components/RecommandBox/RecommandBox.styles';
 
 interface HomeItemProps {
   img: string;
