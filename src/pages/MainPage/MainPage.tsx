@@ -3,13 +3,11 @@ import RegionButton from './components/RegionButton/RegionButton';
 import RecommandBox from './components/RecommandBox/RecommandBox';
 import exampleImg from '@assets/ex_recHome.svg';
 
-import { useState } from 'react';
 import HomeItem from '@components/HomeItem/HomeItem';
 import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [region, setRegion] = useState<string>('');
 
   const regions: string[] = [
     '서울',
