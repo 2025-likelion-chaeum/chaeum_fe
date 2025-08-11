@@ -4,7 +4,7 @@ import RecommandBox from './components/RecommandBox/RecommandBox';
 import exampleImg from '@assets/ex_recHome.svg';
 
 import { useState } from 'react';
-import HomeItem from './components/HomeItem/HomeItem';
+import HomeItem from '@components/HomeItem/HomeItem';
 
 const MainPage = () => {
   const [region, setRegion] = useState<string>('');

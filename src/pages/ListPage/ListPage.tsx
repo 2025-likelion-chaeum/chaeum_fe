@@ -1,7 +1,11 @@
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import * as L from './ListPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
+import exampleImg from '@assets/ex_recHome.svg';
+import HomeItem from '@components/HomeItem/HomeItem';
+import Dropdown from '@components/Dropdown/Dropdown';
 
 /**
  * Topbar에 들어가는 제목 내용이 계속 바뀌므로,
@@ -16,10 +20,113 @@ import Topbar from '@/components/Topbar/Topbar';
 const ListPage = () => {
   const location = useLocation();
 
+  const HomeData = [
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+    {
+      img: exampleImg,
+      type: '농가주택 매매',
+      price: '매매 9,000만원',
+      region: '충청남도 서천군',
+      size: '대 529m²(160평)',
+    },
+    {
+      img: exampleImg,
+      type: '한옥 임대',
+      price: '월세 50만원',
+      region: '전라북도 전주시',
+      size: '대 120m²(36평)',
+    },
+    {
+      img: exampleImg,
+      type: '상가 매매',
+      price: '매매 2억 5,000만원',
+      region: '경기도 고양시',
+      size: '대 200m²(60평)',
+    },
+  ];
+  const category = [
+    '시골농가주택',
+    '전원주택',
+    '조립식주택',
+    '토지/임야',
+    '아파트/빌라',
+    '과수원/농장',
+    '민박펜션/체험농장',
+    '공장/창고',
+  ];
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  const handleSelect = (item: string) => {
+    setSelectedCategories((prev) => (prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]));
+    console.log(selectedCategories);
+  };
+
+  //반영된 거 확인 용
+  useEffect(() => {
+    console.log(selectedCategories);
+  }, [selectedCategories]);
+
   return (
     <>
-      <Topbar text={`${location.state.text}`} style="none" />
-      <L.ListPage></L.ListPage>
+      <Topbar text={'전국의 빈집들'} style="none" />
+      <L.ListPage>
+        <Dropdown text={'매물 종류'} array={category} onSelect={handleSelect} selected={selectedCategories} />
+        <L.HomeList>
+          {HomeData.map((item, idx) => (
+            <HomeItem
+              key={idx}
+              img={item.img}
+              type={item.type}
+              price={item.price}
+              region={item.region}
+              size={item.size}
+              onClick={() => console.log(`${item.type} 클릭됨`)}
+            />
+          ))}
+        </L.HomeList>
+      </L.ListPage>
     </>
   );
 };
