@@ -5,8 +5,10 @@ import exampleImg from '@assets/ex_recHome.svg';
 
 import { useState } from 'react';
 import HomeItem from '@components/HomeItem/HomeItem';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
+  const navigate = useNavigate();
   const [region, setRegion] = useState<string>('');
 
   const regions: string[] = [
@@ -128,7 +130,13 @@ const MainPage = () => {
         <M.Semibold18>어느 지역을 찾으시나요?</M.Semibold18>
         <M.Region>
           {regions.map((region) => (
-            <RegionButton key={region} text={region} onClick={() => setRegion(region)} />
+            <RegionButton
+              key={region}
+              text={region}
+              onClick={() => {
+                navigate('/list', { state: { text: region } });
+              }}
+            />
           ))}
         </M.Region>
       </M.Group>
@@ -155,7 +163,12 @@ const MainPage = () => {
       <M.Group>
         <M.Title>
           <M.Semibold18>방금 등록된 따끈한 빈집들</M.Semibold18>
-          <M.Regular12>더 보러가기</M.Regular12>
+          <M.Regular12
+            onClick={() => {
+              navigate('/list', { state: { text: '전국' } });
+            }}>
+            더 보러가기
+          </M.Regular12>
         </M.Title>
         <M.HomeList>
           {HomeData.map((item, idx) => (

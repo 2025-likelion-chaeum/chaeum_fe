@@ -19,6 +19,7 @@ import Dropdown from '@components/Dropdown/Dropdown';
 
 const ListPage = () => {
   const location = useLocation();
+  const { text } = location.state || {};
 
   const HomeData = [
     {
@@ -126,7 +127,7 @@ const ListPage = () => {
 
   return (
     <>
-      <Topbar text={'전국의 빈집들'} style="none" />
+      <Topbar text={text + '의 빈집들'} style="none" />
       <L.ListPage>
         <L.DropdownContaioner>
           <Dropdown text={'매물 종류'} array={category} onSelect={handleSelect} selected={selectedCategories} />
