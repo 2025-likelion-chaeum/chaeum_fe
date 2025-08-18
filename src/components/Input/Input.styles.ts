@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import palette from '@/styles/theme';
 
 export const InputWrapper = styled.div`
-  padding: 0 20px;
+  /* padding: 0 20px; */
   width: 100%;
 `;
 
