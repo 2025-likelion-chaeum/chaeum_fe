@@ -2,19 +2,19 @@ import styled from '@emotion/styled';
 import palette from '@styles/theme';
 
 export const UploadPage = styled.div`
-  width: calc(100% - 32px);
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 16px;
   gap: 20px;
 `;
 
 export const Header = styled.div`
-  width: 100%;
+  width: calc(100% - 32px);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin: 12px 16px;
 `;
 
 export const ProgressBarWrapper = styled.div`
@@ -35,6 +35,8 @@ export const Group = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  margin: 0 16px;
 `;
 
 export const Bold18 = styled.div`
@@ -70,4 +72,14 @@ export const Medium14 = styled.div`
   font-weight: 500;
   line-height: 140%;
   color: ${palette.grayscale['88']};
+`;
+
+export const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 16px;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 360px;
+  }
 `;
