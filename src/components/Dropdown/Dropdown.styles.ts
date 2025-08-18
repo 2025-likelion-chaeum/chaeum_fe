@@ -16,6 +16,8 @@ export const Dropdown = styled.div`
   gap: 4px;
   border-radius: 12px;
   border: 1px solid ${palette.grayscale.eb};
+
+  background-color: ${palette.grayscale.white};
 `;
 
 export const Medium14 = styled.div`

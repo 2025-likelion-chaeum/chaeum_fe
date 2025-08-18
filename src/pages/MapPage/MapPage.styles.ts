@@ -19,3 +19,14 @@ export const HomeItemContainer = styled.div`
     width: 360px;
   }
 `;
+
+export const DropdownContaioner = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+
+  position: absolute;
+  z-index: 101;
+  top: 16px;
+  left: 16px;
+`;

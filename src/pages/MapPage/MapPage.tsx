@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
+
 import * as M from './MapPage.styles';
-import locations from '@data/locations.json';
+
 import HomeItem from '@/components/HomeItem/HomeItem';
+import Dropdown from '@/components/Dropdown/Dropdown';
+
+import locations from '@data/locations.json';
 import exampleImg from '@assets/ex_recHome.svg';
 
 declare global {
@@ -29,6 +33,44 @@ type info = {
 const MapPage = () => {
   const [info, setInfo] = useState<info>();
   const [showItem, setShowItem] = useState(false);
+
+  const [selectedType, setSelectedType] = useState<string[]>([]);
+  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
+
+  const type = [
+    '시골농가주택',
+    '전원주택',
+    '조립식주택',
+    '토지/임야',
+    '아파트/빌라',
+    '과수원/농장',
+    '민박펜션/체험농장',
+    '공장/창고',
+  ];
+
+  const method = ['매매', '임대', '전세', '월세', '단기'];
+
+  const price = [
+    '천만원 미만',
+    '천만원 이상 5천만원 미만',
+    '5천만원 이상 1억원 미만',
+    '1억원 이상 5억원 미만',
+    '5억원 이상 10억원 미만',
+    '10억원 이상',
+  ];
+
+  const handleSelect = (item: string) => {
+    setSelectedType((prev) => (prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]));
+  };
+
+  const handleSelectMethod = (item: string) => {
+    setSelectedMethods((prev) => (prev.includes(item) ? prev.filter((m) => m !== item) : [...prev, item]));
+  };
+
+  const handleSelectPrice = (item: string) => {
+    setSelectedPrices((prev) => (prev.includes(item) ? prev.filter((p) => p !== item) : [...prev, item]));
+  };
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -166,19 +208,25 @@ const MapPage = () => {
 
   return (
     <>
-      <M.MapPage id="map"></M.MapPage>
-      {showItem && (
-        <M.HomeItemContainer style={{}}>
-          <HomeItem
-            img={exampleImg}
-            type={info?.type || ''}
-            price={info?.price || ''}
-            region={info?.region || ''}
-            size={info?.size || ''}
-            onClick={() => console.log(`${info?.type} 클릭됨`)}
-          />
-        </M.HomeItemContainer>
-      )}
+      <M.MapPage id="map">
+        <M.DropdownContaioner>
+          <Dropdown text="매물 종류" array={type} onSelect={handleSelect} selected={selectedType} />
+          <Dropdown text="거래 방식" array={method} onSelect={handleSelectMethod} selected={selectedMethods} />
+          <Dropdown text="거래 금액" array={price} onSelect={handleSelectPrice} selected={selectedPrices} />
+        </M.DropdownContaioner>
+        {showItem && (
+          <M.HomeItemContainer style={{}}>
+            <HomeItem
+              img={exampleImg}
+              type={info?.type || ''}
+              price={info?.price || ''}
+              region={info?.region || ''}
+              size={info?.size || ''}
+              onClick={() => console.log(`${info?.type} 클릭됨`)}
+            />
+          </M.HomeItemContainer>
+        )}
+      </M.MapPage>
     </>
   );
 };
