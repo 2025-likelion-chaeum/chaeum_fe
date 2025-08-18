@@ -37,8 +37,11 @@ const DetailPage = () => {
     if (!scrollRef.current) return;
     const scrollTop = scrollRef.current.scrollTop;
 
-    const newY = Math.min(scrollTop, 180);
-    y.set(-newY);
+    // blackTopbar가 true일 때만 y 값 업데이트
+    if (blackTopbar) {
+      const newY = Math.min(scrollTop, 180);
+      y.set(-newY);
+    }
   };
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const DetailPage = () => {
       <AnimatePresence>
         <D.Sheet style={{ y }}>
           <D.SheetScroll ref={scrollRef} onScroll={handleScroll}>
-            <D.SheetContent scrollable={blackTopbar}>
+            <D.SheetContent>
               <D.Header>
                 <D.Title style={{ marginTop: blackTopbar ? '40px' : '0' }}>
                   <D.Semibold16>매매 5억원</D.Semibold16>

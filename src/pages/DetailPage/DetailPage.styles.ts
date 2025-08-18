@@ -11,6 +11,7 @@ export const TopbarContainer = styled.div`
   position: absolute;
   z-index: 1000;
 `;
+
 export const Image = styled.img`
   height: 240px;
   width: 100%;
@@ -31,6 +32,13 @@ export const Sheet = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  @media (min-width: 768px) {
+    width: 360px;
+    left: calc(50% - 180px);
+    right: auto;
+    transform: translateX(-50%);
+  }
 `;
 
 export const SheetScroll = styled.div`
@@ -38,11 +46,10 @@ export const SheetScroll = styled.div`
   overflow: scroll;
 `;
 
-export const SheetContent = styled.div<{ scrollable: boolean }>`
+export const SheetContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow: ${({ scrollable }) => (scrollable ? 'auto' : 'clip')};
 `;
 
 export const Header = styled.div`
