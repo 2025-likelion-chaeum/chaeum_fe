@@ -8,6 +8,7 @@ export const TabBar = styled.div`
   background-color: ${palette.grayscale.white};
 
   position: sticky;
+  z-index: 100;
   bottom: 0;
 
   width: 100%;

@@ -14,6 +14,8 @@ export const HomeItemBox = styled.div`
   flex-direction: row;
   border-radius: 12px;
   border: 1px solid ${palette.grayscale.eb};
+
+  background-color: ${palette.grayscale.white};
 `;
 
 export const HomeImg = styled.img`
