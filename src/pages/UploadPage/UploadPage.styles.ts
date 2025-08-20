@@ -3,9 +3,9 @@ import palette from '@styles/theme';
 
 export const UploadPage = styled.div`
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 `;
 
 export const Header = styled.div`
@@ -36,7 +36,7 @@ export const Group = styled.div`
   flex-direction: column;
   gap: 6px;
 
-  margin: 0 16px;
+  margin: 16px;
 `;
 
 export const Bold18 = styled.div`
@@ -75,11 +75,14 @@ export const Medium14 = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  position: fixed;
-  bottom: 16px;
   width: 100%;
+  margin-bottom: 16px;
 
   @media (min-width: 768px) {
     width: 360px;
   }
+`;
+
+export const StateContent = styled.div`
+  flex: 1;
 `;
