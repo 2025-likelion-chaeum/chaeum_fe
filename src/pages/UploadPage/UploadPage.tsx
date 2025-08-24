@@ -19,36 +19,74 @@ type AddressData = {
 const UploadPage = () => {
   const [state, setState] = useState<number>(1);
   const progress = Math.floor((state / 3) * 100);
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [address, setAddress] = useState<AddressData | null>(null);
   const [addressModal, setAddressModal] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  const convertDealType = (value: string) => {
+    switch (value) {
+      case '매매':
+        return 'SALE';
+      case '임대':
+        return 'RENTAL';
+      case '전세':
+        return 'JEONSE';
+      case '월세':
+        return 'MONTHLYRENT';
+      case '단기':
+        return 'SHORTTERM';
+      default:
+        return null;
+    }
+  };
+
+  const convertSaleType = (value: string) => {
+    switch (value) {
+      case '시골농가주택':
+        return 'RURAL_FARM_HOUSE';
+      case '전원주택':
+        return 'COUNTRY_HOUSE';
+      case '조립식주택':
+        return 'PREFAB_HOUSE';
+      case '토지/임야':
+        return 'LAND';
+      case '아파트/빌라':
+        return 'APARTMENT_VILLA';
+      case '과수원/농장':
+        return 'ORCHARD_FARM';
+      case '민박펜션/체험농장':
+        return 'GUESTHOUSE_FARMSTAY';
+      case '공장/창고':
+        return 'FACTORY_WAREHOUSE';
+      default:
+        return null;
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     const newFiles = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
 
-    const availablePhotos = 5 - photos.length;
+    const availableAddImages = 5 - houseImages.length;
 
-    if (availablePhotos <= 0) {
+    if (availableAddImages <= 0) {
       setToast('사진은 최대 5장까지 업로드 가능합니다.');
       e.target.value = '';
       return;
     }
 
-    const allowedFiles = newFiles.slice(0, availablePhotos);
+    const allowedFiles = newFiles.slice(0, availableAddImages);
 
-    if (newFiles.length > availablePhotos) {
+    if (newFiles.length > availableAddImages) {
       setToast('사진은 최대 5장까지만 업로드됩니다.');
     }
 
-    setPhotos((prev) => [...prev, ...allowedFiles]);
+    setHouseImages((prev) => [...prev, ...allowedFiles]);
     e.target.value = '';
   };
 
   const handleRemove = (idx: number) => {
-    setPhotos((prev) => prev.filter((_, i) => i !== idx));
+    setHouseImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const completeHandler = (data: AddressData) => {
@@ -68,22 +106,25 @@ const UploadPage = () => {
   ];
 
   const method = ['매매', '임대', '전세', '월세', '단기'];
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
-  const [titleInput, setTitleInput] = useState<string>('');
-  const [priceInput, setPriceInput] = useState<string>('');
-  const [sizeInput, setSizeInput] = useState<string>('');
-  const [depositInput, setDepositInput] = useState<string>('');
-  const [monthPriceInput, setMonthPriceInput] = useState<string>('');
-  const [dateInput, setDateInput] = useState<string>('');
-  const [roomInput, setRoomInput] = useState<string>('');
-  const [directionInpit, setDirectionInput] = useState<string>('');
-  const [carInput, setCarInput] = useState<string>('');
-  const [hittingInput, setHittingInput] = useState<string>('');
-  const [trafficInput, setTrafficInput] = useState<string>('');
-  const [convenienceInput, setConvenienceInput] = useState<string>('');
-  const [optionInput, setOptionInput] = useState<string>('');
-  const [additionalInput, setAdditionalInput] = useState<string>('');
+
+  const [address, setAddress] = useState<AddressData | null>(null);
+  const [dealType, setDealType] = useState<string | null>(null);
+  const [saleType, setSaleType] = useState<string | null>(null);
+  const [houseImages, setHouseImages] = useState<string[]>([]);
+  const [title, setTitle] = useState<string>('');
+  const [depositRent, setDepositRent] = useState<string>('');
+  const [area, setArea] = useState<string>('');
+  const [currentJeonse, setCurrentJeonse] = useState<string>('');
+  const [currentDepositRent, setCurrentDepositRent] = useState<string>('');
+  const [moveInAvailableDate, setMoveInAvailableDate] = useState<string>('');
+  const [roomCount, setRoomCount] = useState<string>('');
+  const [direction, setDirectiion] = useState<string>('');
+  const [parkingSpace, setParkingSpace] = useState<string>('');
+  const [heatingType, setHeatingType] = useState<string>('');
+  const [transportation, setTransportation] = useState<string>('');
+  const [facilities, setFacilities] = useState<string>('');
+  const [options, setOptions] = useState<string>('');
+  const [etc, setEtc] = useState<string>('');
 
   return (
     <>
@@ -132,24 +173,14 @@ const UploadPage = () => {
               <U.Group>
                 <U.Semibold16>매물 종류</U.Semibold16>
                 {category.map((item) => (
-                  <CheckItem
-                    key={item}
-                    text={item}
-                    checked={selectedCategory === item}
-                    onClick={() => setSelectedCategory(item)}
-                  />
+                  <CheckItem key={item} text={item} checked={dealType === item} onClick={() => setDealType(item)} />
                 ))}
               </U.Group>
 
               <U.Group>
                 <U.Semibold16>거래 방식</U.Semibold16>
                 {method.map((item) => (
-                  <CheckItem
-                    key={item}
-                    text={item}
-                    checked={selectedMethod === item}
-                    onClick={() => setSelectedMethod(item)}
-                  />
+                  <CheckItem key={item} text={item} checked={saleType === item} onClick={() => setSaleType(item)} />
                 ))}
               </U.Group>
             </U.StateContent>
@@ -160,7 +191,7 @@ const UploadPage = () => {
                   setState(2);
                 }}
                 type="submit"
-                disabled={!selectedMethod || !selectedCategory}
+                disabled={!address || !saleType || !dealType}
               />
             </U.ButtonWrapper>
           </>
@@ -179,8 +210,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="빈집을 소개해주세요 (3~10자)"
-                  value={titleInput}
-                  onChange={(e) => setTitleInput(e.target.value)}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -189,8 +220,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="금액을 작성해주세요"
-                  value={priceInput}
-                  onChange={(e) => setPriceInput(e.target.value)}
+                  value={depositRent}
+                  onChange={(e) => setDepositRent(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -199,8 +230,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="평수를 작성해주세요"
-                  value={sizeInput}
-                  onChange={(e) => setSizeInput(e.target.value)}
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
                 />
               </U.Group>
 
@@ -218,7 +249,7 @@ const UploadPage = () => {
                       onChange={handleChange}
                     />
                   </U.UploadPhoto>
-                  {photos.map((photo, idx) => (
+                  {houseImages.map((photo, idx) => (
                     <U.PhotoWrapper>
                       <U.Photo key={idx} src={photo} />
                       <U.RemovePhoto key={idx} src={remove} onClick={() => handleRemove(idx)} />
@@ -235,7 +266,7 @@ const UploadPage = () => {
                   setState(3);
                 }}
                 type="submit"
-                disabled={!titleInput || !priceInput || !sizeInput}
+                disabled={!title || !depositRent || !area || houseImages.length === 0}
               />
             </U.ButtonWrapper>
           </>
@@ -255,8 +286,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="전세금을 입력해주세요"
-                  value={depositInput}
-                  onChange={(e) => setDepositInput(e.target.value)}
+                  value={currentJeonse}
+                  onChange={(e) => setCurrentJeonse(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -265,8 +296,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="보증금과 월세를 작성해주세요"
-                  value={monthPriceInput}
-                  onChange={(e) => setMonthPriceInput(e.target.value)}
+                  value={currentDepositRent}
+                  onChange={(e) => setCurrentDepositRent(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -275,8 +306,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="입주 가능한 날짜를 작성해주세요"
-                  value={dateInput}
-                  onChange={(e) => setDateInput(e.target.value)}
+                  value={moveInAvailableDate}
+                  onChange={(e) => setMoveInAvailableDate(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -285,8 +316,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="방과 욕실 개수를 작성해주세요"
-                  value={roomInput}
-                  onChange={(e) => setRoomInput(e.target.value)}
+                  value={roomCount}
+                  onChange={(e) => setRoomCount(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -295,8 +326,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="방의 방향을 입력해주세요 (예: 남향)"
-                  value={directionInpit}
-                  onChange={(e) => setDirectionInput(e.target.value)}
+                  value={direction}
+                  onChange={(e) => setDirectiion(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -305,8 +336,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="주차 가능한 차량 수를 입력해주세요"
-                  value={carInput}
-                  onChange={(e) => setCarInput(e.target.value)}
+                  value={parkingSpace}
+                  onChange={(e) => setParkingSpace(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -315,8 +346,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="난방 방식을 입력해주세요 (예: 개별난방)"
-                  value={hittingInput}
-                  onChange={(e) => setHittingInput(e.target.value)}
+                  value={heatingType}
+                  onChange={(e) => setHeatingType(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -325,8 +356,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="주변 교통편을 입력해주세요"
-                  value={trafficInput}
-                  onChange={(e) => setTrafficInput(e.target.value)}
+                  value={transportation}
+                  onChange={(e) => setTransportation(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -335,8 +366,8 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="주변 시설 정보를 입력해주세요"
-                  value={convenienceInput}
-                  onChange={(e) => setConvenienceInput(e.target.value)}
+                  value={facilities}
+                  onChange={(e) => setFacilities(e.target.value)}
                 />
               </U.Group>
               <U.Group>
@@ -345,19 +376,18 @@ const UploadPage = () => {
                   mode="controlled"
                   type="string"
                   placeholder="제공되는 옵션을 입력해주세요"
-                  value={optionInput}
-                  onChange={(e) => setOptionInput(e.target.value)}
+                  value={options}
+                  onChange={(e) => setOptions(e.target.value)}
                 />
               </U.Group>
               <U.Group>
                 <U.Semibold16>기타 정보</U.Semibold16>
                 <U.Medium12>임대 물건, 임대 조건, 특이사항, 제한사항 등 자유롭게 작성해주세요.</U.Medium12>
-                <Input
-                  mode="controlled"
-                  type="string"
+
+                <U.Textarea
                   placeholder="추가로 안내할 내용을 입력해주세요"
-                  value={additionalInput}
-                  onChange={(e) => setAdditionalInput(e.target.value)}
+                  value={etc}
+                  onChange={(e) => setEtc(e.target.value)}
                 />
               </U.Group>
             </U.StateContent>
@@ -369,7 +399,6 @@ const UploadPage = () => {
                   setState(3);
                 }}
                 type="submit"
-                disabled={!selectedMethod || !selectedCategory}
               />
             </U.ButtonWrapper>
           </>

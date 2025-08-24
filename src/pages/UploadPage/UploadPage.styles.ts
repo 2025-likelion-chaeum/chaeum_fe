@@ -107,6 +107,7 @@ export const UploadPhoto = styled.label`
   border: 1px solid ${palette.grayscale.de};
   position: relative;
   bottom: 2.5px;
+  cursor: pointer;
 `;
 
 export const Photo = styled.img`
@@ -154,4 +155,32 @@ export const Regular12 = styled.div`
   font-size: 12px;
   font-weight: 400;
   line-height: 140%;
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  height: 140px;
+  resize: none;
+
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  background-color: ${palette.grayscale.white};
+
+  outline: none;
+
+  color: ${palette.grayscale.base};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+
+  &::placeholder {
+    color: ${palette.grayscale[88]};
+
+    font-family: 'Pretendard';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
 `;
