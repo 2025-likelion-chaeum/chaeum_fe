@@ -106,7 +106,7 @@ export const UploadPhoto = styled.label`
   border-radius: 8px;
   border: 1px solid ${palette.grayscale.de};
   position: relative;
-  bottom: 2px;
+  bottom: 2.5px;
 `;
 
 export const Photo = styled.img`

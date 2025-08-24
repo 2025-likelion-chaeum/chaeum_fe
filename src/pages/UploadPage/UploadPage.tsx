@@ -18,13 +18,15 @@ const UploadPage = () => {
 
     const newFiles = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
 
-    // 최대 5장까지만
     setPhotos((prev) => {
-      const combined = [...prev, ...newFiles];
-      return combined.slice(0, 5);
+      return [...prev, ...newFiles];
     });
 
     e.target.value = '';
+  };
+
+  const handleRemove = (idx: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const category = [
@@ -173,7 +175,7 @@ const UploadPage = () => {
                   {photos.map((photo, idx) => (
                     <U.PhotoWrapper>
                       <U.Photo key={idx} src={photo} />
-                      <U.RemovePhoto key={idx} src={remove} />
+                      <U.RemovePhoto key={idx} src={remove} onClick={() => handleRemove(idx)} />
                     </U.PhotoWrapper>
                   ))}
                 </U.PhotoGroup>
