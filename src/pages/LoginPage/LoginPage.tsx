@@ -7,7 +7,6 @@ import * as L from './LoginPage.styles';
 import Logo from '@assets/logo.svg';
 import Button from '@components/Button/Button';
 import { postLogin } from '@/apis/Signup/auth';
-import type { AxiosError } from 'axios';
 
 const LoginPage = () => {
   const schema = z.object({

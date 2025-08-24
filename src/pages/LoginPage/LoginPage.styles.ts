@@ -2,7 +2,6 @@ import Input from '@/components/Input/Input';
 import palette from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-// import palette from '@styles/theme';
 
 export const LoginPage = styled.div`
   height: 100dvh;
@@ -46,6 +45,8 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  padding: 0 20px;
 `;
 
 export const NavigateWrapper = styled.div`
