@@ -4,7 +4,7 @@ import * as M from './MyAccountPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
 import { useEffect, useState } from 'react';
 
-import { getMypage } from '@/apis/Mypage/Mypage';
+import { getMypage, postLogout } from '@/apis/Mypage/Mypage';
 import type { ResponseMypageDto } from '@/types/Mypage/Mypage';
 
 const MyAccountPage = () => {
@@ -25,6 +25,17 @@ const MyAccountPage = () => {
       content: `${profileData?.email}`,
     },
   ];
+
+  const handleLogout = async () => {
+    try {
+      const response = await postLogout();
+      console.log(response);
+
+      navigate('/login');
+    } catch (error) {
+      console.error('로그아웃 실패', error);
+    }
+  };
 
   useEffect(() => {
     const getMypageData = async () => {
@@ -56,7 +67,7 @@ const MyAccountPage = () => {
         </M.AccountWrapper>
 
         <M.ButtonWrapper>
-          <M.Button onClick={() => navigate('/login')}>로그아웃</M.Button>
+          <M.Button onClick={handleLogout}>로그아웃</M.Button>
         </M.ButtonWrapper>
       </M.MyAccountPage>
     </>
