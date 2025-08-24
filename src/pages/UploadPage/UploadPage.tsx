@@ -4,6 +4,7 @@ import camera from '@assets/icon-camera.svg';
 import search from '@assets/icon-search-20.svg';
 import remove from '@assets/icon-removePhoto.svg';
 import CheckItem from './components/CheckItem/CheckItem';
+import Toast from './components/Toast/Toast';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
@@ -21,16 +22,28 @@ const UploadPage = () => {
   const [photos, setPhotos] = useState<string[]>([]);
   const [address, setAddress] = useState<AddressData | null>(null);
   const [addressModal, setAddressModal] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     const newFiles = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
 
-    setPhotos((prev) => {
-      return [...prev, ...newFiles];
-    });
+    const availablePhotos = 5 - photos.length;
 
+    if (availablePhotos <= 0) {
+      setToast('사진은 최대 5장까지 업로드 가능합니다.');
+      e.target.value = '';
+      return;
+    }
+
+    const allowedFiles = newFiles.slice(0, availablePhotos);
+
+    if (newFiles.length > availablePhotos) {
+      setToast('사진은 최대 5장까지만 업로드됩니다.');
+    }
+
+    setPhotos((prev) => [...prev, ...allowedFiles]);
     e.target.value = '';
   };
 
@@ -362,6 +375,7 @@ const UploadPage = () => {
           </>
         )}
       </U.UploadPage>
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </>
   );
 };
