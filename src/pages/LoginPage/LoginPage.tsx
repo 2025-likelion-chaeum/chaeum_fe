@@ -36,8 +36,12 @@ const LoginPage = () => {
     try {
       const response = await postLogin(data);
 
+      console.log(response);
+
       if (response.data?.isFirstLogin) {
-        navigate('/onboarding');
+        navigate('/onboarding', {
+          state: data.email,
+        });
       } else {
         navigate('/');
       }
