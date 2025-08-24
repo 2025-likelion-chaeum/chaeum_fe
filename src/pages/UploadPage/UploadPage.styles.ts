@@ -86,3 +86,46 @@ export const ButtonWrapper = styled.div`
 export const StateContent = styled.div`
   flex: 1;
 `;
+
+export const PhotoGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: scroll;
+  height: 135px;
+  align-items: end;
+`;
+
+export const UploadPhoto = styled.label`
+  display: flex;
+  width: 120px;
+  height: 120px;
+  padding: 48px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  position: relative;
+  bottom: 2px;
+`;
+
+export const Photo = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+`;
+
+export const RemovePhoto = styled.img`
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+export const PhotoWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;

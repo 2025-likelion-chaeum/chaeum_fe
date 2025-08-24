@@ -1,6 +1,8 @@
 import * as U from './UploadPage.styles';
 import close from '@assets/icon-close.svg';
+import camera from '@assets/icon-camera.svg';
 import search from '@assets/icon-search-20.svg';
+import remove from '@assets/icon-removePhoto.svg';
 import CheckItem from './components/CheckItem/CheckItem';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
@@ -9,6 +11,21 @@ import { useState } from 'react';
 const UploadPage = () => {
   const [state, setState] = useState<number>(1);
   const progress = Math.floor((state / 3) * 100);
+  const [photos, setPhotos] = useState<string[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const newFiles = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+
+    // 최대 5장까지만
+    setPhotos((prev) => {
+      const combined = [...prev, ...newFiles];
+      return combined.slice(0, 5);
+    });
+
+    e.target.value = '';
+  };
 
   const category = [
     '시골농가주택',
@@ -141,6 +158,25 @@ const UploadPage = () => {
 
               <U.Group>
                 <U.Semibold16>빈집 사진</U.Semibold16>
+                <U.PhotoGroup>
+                  <U.UploadPhoto htmlFor="photo">
+                    <img src={camera} />
+                    <input
+                      type="file"
+                      id="photo"
+                      style={{ display: 'none' }}
+                      accept="image/*"
+                      multiple
+                      onChange={handleChange}
+                    />
+                  </U.UploadPhoto>
+                  {photos.map((photo, idx) => (
+                    <U.PhotoWrapper>
+                      <U.Photo key={idx} src={photo} />
+                      <U.RemovePhoto key={idx} src={remove} />
+                    </U.PhotoWrapper>
+                  ))}
+                </U.PhotoGroup>
               </U.Group>
             </U.StateContent>
 
@@ -151,7 +187,7 @@ const UploadPage = () => {
                   setState(3);
                 }}
                 type="submit"
-                disabled={!selectedMethod || !selectedCategory}
+                disabled={!titleInput || !priceInput || !sizeInput}
               />
             </U.ButtonWrapper>
           </>
