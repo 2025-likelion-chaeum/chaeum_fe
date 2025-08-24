@@ -7,6 +7,7 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 
 import locations from '@data/locations.json';
 import exampleImg from '@assets/ex_recHome.svg';
+import { useNavigate } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -206,6 +207,8 @@ const MapPage = () => {
     };
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <>
       <M.MapPage id="map">
@@ -222,7 +225,7 @@ const MapPage = () => {
               price={info?.price || ''}
               region={info?.region || ''}
               size={info?.size || ''}
-              onClick={() => console.log(`${info?.type} 클릭됨`)}
+              onClick={() => navigate('/list/1')}
             />
           </M.HomeItemContainer>
         )}
