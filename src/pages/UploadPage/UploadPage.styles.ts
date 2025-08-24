@@ -129,3 +129,29 @@ export const PhotoWrapper = styled.div`
   position: relative;
   display: inline-block;
 `;
+
+export const AddressResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+
+  border-radius: 12px;
+  border: 1px solid ${palette.grayscale.eb};
+`;
+
+export const Semibold14 = styled.div`
+  color: ${palette.grayscale.base};
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 140%;
+`;
+
+export const Regular12 = styled.div`
+  color: ${palette.grayscale.base};
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%;
+`;

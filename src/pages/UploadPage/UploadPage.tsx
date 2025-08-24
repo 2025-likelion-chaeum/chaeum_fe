@@ -7,11 +7,20 @@ import CheckItem from './components/CheckItem/CheckItem';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
+import DaumPostcode from 'react-daum-postcode';
+
+type AddressData = {
+  zonecode: string; // 우편번호
+  address: string; // 도로명 주소
+  jibunAddress: string; // 지번 주소
+};
 
 const UploadPage = () => {
   const [state, setState] = useState<number>(1);
   const progress = Math.floor((state / 3) * 100);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [address, setAddress] = useState<AddressData | null>(null);
+  const [addressModal, setAddressModal] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -27,6 +36,11 @@ const UploadPage = () => {
 
   const handleRemove = (idx: number) => {
     setPhotos((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const completeHandler = (data: AddressData) => {
+    setAddress(data);
+    setAddressModal(false);
   };
 
   const category = [
@@ -77,10 +91,29 @@ const UploadPage = () => {
 
               <U.Group>
                 <U.Semibold16>주소</U.Semibold16>
-                <U.AddressInput>
-                  <U.Medium14>주소를 입력해주세요</U.Medium14>
-                  <img src={search} />
-                </U.AddressInput>
+                {address ? (
+                  <U.AddressResult
+                    onClick={() => {
+                      setAddress(null);
+                      setAddressModal(true);
+                    }}>
+                    <U.Semibold14>{address.zonecode}</U.Semibold14>
+
+                    <U.Regular12>도로명 | {address.address}</U.Regular12>
+                    <U.Regular12>구주소 | {address.jibunAddress}</U.Regular12>
+                  </U.AddressResult>
+                ) : (
+                  <U.AddressInput onClick={() => setAddressModal(true)}>
+                    {addressModal ? (
+                      <DaumPostcode onComplete={completeHandler} />
+                    ) : (
+                      <>
+                        <U.Medium14>주소를 입력해주세요</U.Medium14>
+                        <img src={search} />
+                      </>
+                    )}
+                  </U.AddressInput>
+                )}
               </U.Group>
 
               <U.Group>
