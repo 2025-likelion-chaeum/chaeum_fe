@@ -32,7 +32,7 @@ const SignupPage = () => {
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: '비밀번호가 일치하지 않습니다',
-      path: ['passwordCheck'],
+      path: ['confirmPassword'],
     });
 
   type FormFields = z.infer<typeof schema>;
