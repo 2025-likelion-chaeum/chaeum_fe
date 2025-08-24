@@ -247,7 +247,7 @@ const UploadPage = () => {
                     />
                   </U.UploadPhoto>
                   {houseImages.map((photo, idx) => (
-                    <U.PhotoWrapper>
+                    <U.PhotoWrapper key={idx}>
                       <U.Photo key={idx} src={photo} />
                       <U.RemovePhoto key={idx} src={remove} onClick={() => handleRemove(idx)} />
                     </U.PhotoWrapper>
