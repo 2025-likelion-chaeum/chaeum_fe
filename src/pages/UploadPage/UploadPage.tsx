@@ -9,6 +9,9 @@ import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import { RegisterHome } from '@/apis/Register/register';
+import type { RequestRegisterDto, DealTypeKo, SaleTypeKo } from '@/types/Register/register';
+import { convertDealType, convertSaleType } from '@/types/Register/register';
 
 type AddressData = {
   zonecode: string; // 우편번호
@@ -21,46 +24,6 @@ const UploadPage = () => {
   const progress = Math.floor((state / 3) * 100);
   const [addressModal, setAddressModal] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-
-  const convertDealType = (value: string) => {
-    switch (value) {
-      case '매매':
-        return 'SALE';
-      case '임대':
-        return 'RENTAL';
-      case '전세':
-        return 'JEONSE';
-      case '월세':
-        return 'MONTHLYRENT';
-      case '단기':
-        return 'SHORTTERM';
-      default:
-        return null;
-    }
-  };
-
-  const convertSaleType = (value: string) => {
-    switch (value) {
-      case '시골농가주택':
-        return 'RURAL_FARM_HOUSE';
-      case '전원주택':
-        return 'COUNTRY_HOUSE';
-      case '조립식주택':
-        return 'PREFAB_HOUSE';
-      case '토지/임야':
-        return 'LAND';
-      case '아파트/빌라':
-        return 'APARTMENT_VILLA';
-      case '과수원/농장':
-        return 'ORCHARD_FARM';
-      case '민박펜션/체험농장':
-        return 'GUESTHOUSE_FARMSTAY';
-      case '공장/창고':
-        return 'FACTORY_WAREHOUSE';
-      default:
-        return null;
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -125,6 +88,40 @@ const UploadPage = () => {
   const [facilities, setFacilities] = useState<string>('');
   const [options, setOptions] = useState<string>('');
   const [etc, setEtc] = useState<string>('');
+
+  const handleRegister = async () => {
+    try {
+      const requestData: RequestRegisterDto = {
+        address: address?.address
+          ? (address.address.match(/^([가-힣]+도\s[가-힣]+시)/)?.[1] ??
+            address.address.match(/^([가-힣]+시\s[가-힣]+구)/)?.[1] ??
+            '')
+          : '',
+        dealType: convertDealType(dealType as DealTypeKo),
+        saleType: convertSaleType(saleType as SaleTypeKo),
+        imageUrls: houseImages,
+        title,
+        depositRent: depositRent,
+        area: area,
+        currentJeonse: currentJeonse ? currentJeonse : null,
+        currentDepositRent: currentDepositRent ? currentDepositRent : null,
+        moveInAvailableDate: moveInAvailableDate || null,
+        roomCount: roomCount ? roomCount : null,
+        direction: direction || null,
+        parkingSpace: parkingSpace ? parkingSpace : null,
+        heatingType: heatingType || null,
+        transportation: transportation || null,
+        facilities: facilities || null,
+        options: options || null,
+        etc: etc || null,
+      };
+
+      const response = await RegisterHome(requestData);
+      console.log('등록 성공:', response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -396,7 +393,7 @@ const UploadPage = () => {
               <Button
                 text="등록하기"
                 onClick={() => {
-                  setState(3);
+                  handleRegister();
                 }}
                 type="submit"
               />
