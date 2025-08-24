@@ -5,6 +5,7 @@ import z from 'zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { postOnboarding } from '@/apis/Onboarding/Onboarding';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -32,27 +33,28 @@ const OnboardingPage = () => {
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { usagePurpose, ETC, ...rest } = data;
-
-    const requestPurpose = ETC ? [...usagePurpose, 'ETC'] : usagePurpose;
-
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
     const requestData = {
       email,
       purpose: data.purpose,
-      usagePurpose: requestPurpose,
+      usagePurpose: data.usagePurpose,
       additionalDetail: data.additionDetail,
+      usagePurposeEtcDetail: data.ETC,
     };
 
-    console.log(requestData);
+    try {
+      const res = await postOnboarding(requestData);
+      console.log(res);
 
-    navigate('/');
+      navigate('/');
+    } catch (error) {
+      console.error('온보딩 등록 실패', error);
+    }
   };
 
   const watchPurpose = watch('purpose');
   const watchUtilize = watch('usagePurpose');
-  const isEtcChecked = watchUtilize.includes('etc');
+  const isEtcChecked = watchUtilize.includes('ETC');
 
   const utilizeList = [
     {
@@ -89,22 +91,22 @@ const OnboardingPage = () => {
     <>
       <Topbar style="none" />
 
-      <form onClick={handleSubmit(onSubmit)}>
+      <form>
         <O.OnboardingPage>
           <O.Section>
             <O.Title>서비스를 이용하려는 주 목적이 무엇인가요?</O.Title>
             <O.Label htmlFor="buy">
-              <O.RadioInput type="radio" value="buy" id="buy" {...register('purpose')} />
+              <O.RadioInput type="radio" value="BUY" id="buy" {...register('purpose')} />
               빈집을 구매하기 위해
             </O.Label>
 
             <O.Label htmlFor="sell">
-              <O.RadioInput type="radio" value="sell" id="sell" {...register('purpose')} />
+              <O.RadioInput type="radio" value="SELL" id="sell" {...register('purpose')} />
               빈집을 판매하기 위해
             </O.Label>
 
             <O.Label htmlFor="both">
-              <O.RadioInput type="radio" value="both" id="both" {...register('purpose')} />
+              <O.RadioInput type="radio" value="BOTH" id="both" {...register('purpose')} />
               구매와 판매
             </O.Label>
           </O.Section>
@@ -123,8 +125,8 @@ const OnboardingPage = () => {
                 ))}
 
                 <O.EtcWrapper>
-                  <O.Label htmlFor="etc">
-                    <O.RadioInput type="checkbox" value="etc" id="etc" {...register('usagePurpose')} />
+                  <O.Label htmlFor="ETC">
+                    <O.RadioInput type="checkbox" value="ETC" id="ETC" {...register('usagePurpose')} />
                     기타
                   </O.Label>
                   <O.UserInput
@@ -133,7 +135,7 @@ const OnboardingPage = () => {
                     {...register('ETC')}
                     onFocus={() => {
                       if (!isEtcChecked) {
-                        setValue('usagePurpose', [...watchUtilize, 'etc'], { shouldValidate: true });
+                        setValue('usagePurpose', [...watchUtilize, 'ETC'], { shouldValidate: true });
                       }
                     }}
                   />
@@ -153,7 +155,12 @@ const OnboardingPage = () => {
           )}
 
           <O.ButtonWrapper>
-            <Button text="시작하기" type="submit" disabled={!watchPurpose || watchUtilize.length === 0} />
+            <Button
+              text="시작하기"
+              type="submit"
+              onClick={handleSubmit(onSubmit)}
+              disabled={!watchPurpose || watchUtilize.length === 0}
+            />
           </O.ButtonWrapper>
         </O.OnboardingPage>
       </form>

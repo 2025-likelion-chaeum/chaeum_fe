@@ -7,3 +7,6 @@ export type ResponseMypageDto = CommonResponse<{
   phoneNum: string;
   email: string;
 }>;
+
+// 로그아웃
+export type ResponseLogoutDto = CommonResponse<null>;
