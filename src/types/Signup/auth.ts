@@ -16,3 +16,15 @@ export type ResponseSignupDto = CommonResponse<{
   password: string;
   confirmPassword: string;
 }>;
+
+// 로그인
+export type RequestLoginDto = {
+  email: string;
+  password: string;
+};
+
+export type ResponseLoginDto = CommonResponse<{
+  email: string;
+  password: string;
+  isFirstLogin: boolean;
+}>;

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import * as L from './LoginPage.styles';
 import Logo from '@assets/logo.svg';
 import Button from '@components/Button/Button';
+import { postLogin } from '@/apis/Signup/auth';
+import type { AxiosError } from 'axios';
 
 const LoginPage = () => {
   const schema = z.object({
@@ -32,23 +34,22 @@ const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    const user = {
-      email: 'a@gmail.com',
-      password: '123a',
-    };
+    try {
+      const response = await postLogin(data);
 
-    const isValidUser = data.email === user.email && data.password === user.password;
+      if (response.data?.isFirstLogin) {
+        navigate('/onboarding');
+      } else {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('로그인 실패', error);
 
-    if (!isValidUser) {
       setError('email', { message: undefined });
       setError('password', {
         message: '이메일 또는 비밀번호가 일치하지 않습니다.',
       });
-
-      return;
     }
-
-    navigate('/onboarding');
   };
 
   return (
