@@ -3,9 +3,9 @@ import palette from '@styles/theme';
 
 export const UploadPage = styled.div`
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 `;
 
 export const Header = styled.div`
@@ -36,7 +36,7 @@ export const Group = styled.div`
   flex-direction: column;
   gap: 6px;
 
-  margin: 0 16px;
+  margin: 16px;
 `;
 
 export const Bold18 = styled.div`
@@ -75,11 +75,112 @@ export const Medium14 = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  position: fixed;
-  bottom: 16px;
   width: 100%;
+  margin-bottom: 16px;
 
   @media (min-width: 768px) {
     width: 360px;
+  }
+`;
+
+export const StateContent = styled.div`
+  flex: 1;
+`;
+
+export const PhotoGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: scroll;
+  height: 135px;
+  align-items: end;
+`;
+
+export const UploadPhoto = styled.label`
+  display: flex;
+  width: 120px;
+  height: 120px;
+  padding: 48px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  position: relative;
+  bottom: 2.5px;
+  cursor: pointer;
+`;
+
+export const Photo = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+`;
+
+export const RemovePhoto = styled.img`
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+export const PhotoWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+export const AddressResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+
+  border-radius: 12px;
+  border: 1px solid ${palette.grayscale.eb};
+`;
+
+export const Semibold14 = styled.div`
+  color: ${palette.grayscale.base};
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 140%;
+`;
+
+export const Regular12 = styled.div`
+  color: ${palette.grayscale.base};
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%;
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  height: 140px;
+  resize: none;
+
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  background-color: ${palette.grayscale.white};
+
+  outline: none;
+
+  color: ${palette.grayscale.base};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+
+  &::placeholder {
+    color: ${palette.grayscale[88]};
+
+    font-family: 'Pretendard';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
   }
 `;
