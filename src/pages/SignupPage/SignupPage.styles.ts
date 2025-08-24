@@ -18,9 +18,9 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
 
-  padding-top: 16px;
-
   flex: 1;
+
+  padding: 16px 20px 0 20px;
 `;
 
 export const Field = styled.div`

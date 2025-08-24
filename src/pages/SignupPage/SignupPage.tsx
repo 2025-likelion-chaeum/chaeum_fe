@@ -13,6 +13,8 @@ import Input from '@components/Input/Input';
 import Button from '@components/Button/Button';
 
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
+import { postSignup } from '@/apis/Signup/auth';
+import type { AxiosError } from 'axios';
 
 const SignupPage = () => {
   const phoneRegex = /^01\d-?\d{3,4}-?\d{4}$/;
@@ -23,14 +25,14 @@ const SignupPage = () => {
   const schema = z
     .object({
       name: z.string(),
-      phone: z.string().regex(phoneRegex),
+      phoneNum: z.string().regex(phoneRegex),
       email: z.string().email({ message: '이메일 형식으로 입력해주세요' }),
       password: z.string().regex(passwordRegex, { message: '영문, 숫자를 포함해 4자 이상 입력해주세요' }),
-      passwordCheck: z.string(),
+      confirmPassword: z.string(),
     })
-    .refine((data) => data.password === data.passwordCheck, {
+    .refine((data) => data.password === data.confirmPassword, {
       message: '비밀번호가 일치하지 않습니다',
-      path: ['passwordCheck'],
+      path: ['confirmPassword'],
     });
 
   type FormFields = z.infer<typeof schema>;
@@ -46,10 +48,10 @@ const SignupPage = () => {
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
-      phone: '',
+      phoneNum: '',
       email: '',
       password: '',
-      passwordCheck: '',
+      confirmPassword: '',
     },
     resolver: zodResolver(schema),
     mode: 'onChange',
@@ -62,41 +64,38 @@ const SignupPage = () => {
     const inputValue = e.target.value;
 
     // 지우는 경우 포맷 X
-    if (inputValue.length < watched.phone.length) {
-      setValue('phone', inputValue, { shouldDirty: true });
+    if (inputValue.length < watched.phoneNum.length) {
+      setValue('phoneNum', inputValue, { shouldDirty: true });
       return;
     }
 
     // 입력 길이 늘어난 경우 포맷 O
     const formattedValue = formatPhoneNumber(inputValue);
-    setValue('phone', formattedValue, { shouldDirty: true });
+    setValue('phoneNum', formattedValue, { shouldDirty: true });
   };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    const user = {
-      phone: '010-0000-0000',
-      email: 'a@gmail.com',
-    };
+    try {
+      const response = await postSignup(data);
 
-    let hasError = false;
+      if (response.code === 'SUCCESS_REGISTER') {
+        navigate('/login');
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ status: number; message: string }>;
 
-    if (data.phone === user.phone) {
-      setError('phone', { message: '이미 해당 번호로 계정이 존재합니다.' });
-      hasError = true;
-    }
-
-    if (data.email === user.email) {
-      setError('email', { message: '이미 해당 이메일로 계정이 존재합니다.' });
-      hasError = true;
-    }
-
-    if (!hasError) {
-      navigate('/login');
+      if (error.response?.status === 409) {
+        if (error?.response.data.message.includes('이메일')) {
+          setError('email', { message: '이미 해당 이메일로 계정이 존재합니다.' });
+        } else {
+          setError('phoneNum', { message: '이미 해당 번호로 계정이 존재합니다.' });
+        }
+      }
     }
   };
 
   useEffect(() => {
-    trigger('passwordCheck');
+    trigger('confirmPassword');
   }, [watched.password]);
 
   return (
@@ -113,16 +112,18 @@ const SignupPage = () => {
           <S.Field>
             <S.Title>휴대전화 번호</S.Title>
             <L.SInput
-              $isError={!!errors.phone && !!(errors.phone?.type !== 'invalid_format')}
+              $isError={!!errors.phoneNum && !!(errors.phoneNum?.type !== 'invalid_format')}
               mode="registered"
-              register={register('phone', {
+              register={register('phoneNum', {
                 onChange: handleChange,
               })}
               type="string"
               placeholder="010-0000-0000"
               inputMode="tel"
             />
-            {errors.phone && errors.phone?.type !== 'invalid_format' && <S.Error>{errors.phone?.message}</S.Error>}
+            {errors.phoneNum && errors.phoneNum?.type !== 'invalid_format' && (
+              <S.Error>{errors.phoneNum?.message}</S.Error>
+            )}
           </S.Field>
 
           <S.Field>
@@ -152,13 +153,15 @@ const SignupPage = () => {
           <S.Field>
             <S.Title>비밀번호 확인</S.Title>
             <L.SInput
-              $isError={!!errors.passwordCheck && !!dirtyFields.passwordCheck}
+              $isError={!!errors.confirmPassword && !!dirtyFields.confirmPassword}
               mode="registered"
-              register={register('passwordCheck')}
+              register={register('confirmPassword')}
               type="password"
               placeholder="영문, 숫자 포함 4자 이상"
             />
-            {errors.passwordCheck && dirtyFields.passwordCheck && <S.Error>{errors.passwordCheck.message}</S.Error>}
+            {errors.confirmPassword && dirtyFields.confirmPassword && (
+              <S.Error>{errors.confirmPassword.message}</S.Error>
+            )}
           </S.Field>
         </S.FormWrapper>
 
