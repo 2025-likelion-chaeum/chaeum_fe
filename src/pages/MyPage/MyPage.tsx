@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import * as M from './MyPage.styles';
 import Profile from '@assets/icon-profile-56.svg?react';
 import Arrow from '@assets/icon-arrow-right.svg?react';
+import { useEffect, useState } from 'react';
+import type { ResponseMypageDto } from '@/types/Mypage/Mypage';
+import { getMypage } from '@/apis/Mypage/Mypage';
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<ResponseMypageDto['data'] | null>(null);
 
   const handleNavigate = (url: string, text?: string) => {
     navigate(url, {
@@ -15,6 +19,19 @@ const MyPage = () => {
     });
   };
 
+  useEffect(() => {
+    const getMypageData = async () => {
+      try {
+        const response = await getMypage();
+        setProfileData(response.data);
+      } catch (error) {
+        console.error('마이페이지 조회 실패', error);
+      }
+    };
+
+    getMypageData();
+  }, []);
+
   return (
     <M.MyPage>
       <M.Section>
@@ -22,8 +39,8 @@ const MyPage = () => {
         <M.Wrapper onClick={() => handleNavigate('/mypage/account')} $pTop={16} $gap={true}>
           <Profile />
           <M.Info>
-            <M.SemiBold>김멋사</M.SemiBold>
-            <M.Email>likelion@naver.com</M.Email>
+            <M.SemiBold>{profileData?.name}</M.SemiBold>
+            <M.Email>{profileData?.email}</M.Email>
           </M.Info>
         </M.Wrapper>
       </M.Section>
