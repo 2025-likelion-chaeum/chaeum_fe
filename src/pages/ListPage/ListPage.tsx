@@ -1,11 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import * as L from './ListPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
-import exampleImg from '@assets/ex_recHome.svg';
+// import exampleImg from '@assets/ex_recHome.svg';
 import HomeItem from '@components/HomeItem/HomeItem';
 import Dropdown from '@components/Dropdown/Dropdown';
+import type { RequestListDto, ResponseListDto } from '@/types/HomeList/list';
+import type { SaleTypeKo, DealTypeKo, SaleTypeEn, DealTypeEn } from '@/types/common';
+import { convertSaleType, convertDealType } from '@/types/common';
+import { getList } from '@apis/ListPage/ListPage';
+
+type HomeDataItem = {
+  id: number;
+  source: string;
+  region: string;
+  title: string;
+  address: string;
+  saleType: SaleTypeEn;
+  dealType: DealTypeEn;
+  depositRent: string;
+  area: string;
+  imageUrls: string[];
+  postedOn: string;
+};
 
 /**
  * Topbar에 들어가는 제목 내용이 계속 바뀌므로,
@@ -20,72 +38,6 @@ import Dropdown from '@components/Dropdown/Dropdown';
 const ListPage = () => {
   const location = useLocation();
   const { text } = location.state || {};
-
-  const HomeData = [
-    {
-      img: exampleImg,
-      type: '농가주택 매매',
-      price: '매매 9,000만원',
-      region: '충청남도 서천군',
-      size: '대 529m²(160평)',
-    },
-    {
-      img: exampleImg,
-      type: '한옥 임대',
-      price: '월세 50만원',
-      region: '전라북도 전주시',
-      size: '대 120m²(36평)',
-    },
-    {
-      img: exampleImg,
-      type: '상가 매매',
-      price: '매매 2억 5,000만원',
-      region: '경기도 고양시',
-      size: '대 200m²(60평)',
-    },
-    {
-      img: exampleImg,
-      type: '농가주택 매매',
-      price: '매매 9,000만원',
-      region: '충청남도 서천군',
-      size: '대 529m²(160평)',
-    },
-    {
-      img: exampleImg,
-      type: '한옥 임대',
-      price: '월세 50만원',
-      region: '전라북도 전주시',
-      size: '대 120m²(36평)',
-    },
-    {
-      img: exampleImg,
-      type: '상가 매매',
-      price: '매매 2억 5,000만원',
-      region: '경기도 고양시',
-      size: '대 200m²(60평)',
-    },
-    {
-      img: exampleImg,
-      type: '농가주택 매매',
-      price: '매매 9,000만원',
-      region: '충청남도 서천군',
-      size: '대 529m²(160평)',
-    },
-    {
-      img: exampleImg,
-      type: '한옥 임대',
-      price: '월세 50만원',
-      region: '전라북도 전주시',
-      size: '대 120m²(36평)',
-    },
-    {
-      img: exampleImg,
-      type: '상가 매매',
-      price: '매매 2억 5,000만원',
-      region: '경기도 고양시',
-      size: '대 200m²(60평)',
-    },
-  ];
 
   const category = [
     '시골농가주택',
@@ -113,6 +65,7 @@ const ListPage = () => {
   const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [homeData, setHomeData] = useState<HomeDataItem[]>([]);
 
   const handleSelect = (item: string) => {
     setSelectedCategories((prev) => (prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]));
@@ -129,6 +82,50 @@ const ListPage = () => {
   const toggleDropdown = (key: string) => {
     setOpenDropdown((prev) => (prev === key ? null : key));
   };
+
+  const getHomeData = async () => {
+    try {
+      // 한글 -> 영어 변환
+      const saleTypes = selectedCategories.map((category) => convertSaleType(category as SaleTypeKo));
+      const dealTypes = selectedMethods.map((method) => convertDealType(method as DealTypeKo));
+
+      const requestData: RequestListDto = {
+        region: text || '', // text를 region으로 사용
+        saleTypes: saleTypes,
+        dealTypes: dealTypes,
+        priceRanges: selectedPrices,
+        userOnly: false,
+        page: 0,
+        size: 10,
+      };
+
+      const res = await getList(requestData);
+
+      // res.data가 배열인지 확인 후 설정
+      if (Array.isArray(res.data)) {
+        setHomeData(res.data);
+      } else {
+        // res.data가 객체이고 배열을 포함하고 있는 경우를 대비
+        console.log('API Response:', res);
+        setHomeData([]);
+      }
+    } catch (err) {
+      console.error('리스트 불러오기 실패', err);
+      setHomeData([]); // 에러 시 빈 배열로 설정
+    }
+  };
+
+  useEffect(() => {
+    getHomeData();
+  }, []); // 빈 dependency array로 수정
+
+  // 필터 변경 시 API 재호출
+  useEffect(() => {
+    if (text) {
+      // text가 있을 때만 호출
+      getHomeData();
+    }
+  }, [selectedCategories, selectedMethods, selectedPrices, text]);
 
   return (
     <>
@@ -161,15 +158,15 @@ const ListPage = () => {
           />
         </L.DropdownContaioner>
         <L.HomeList>
-          {HomeData.map((item, idx) => (
+          {homeData.map((item, idx) => (
             <HomeItem
-              key={idx}
-              img={item.img}
-              type={item.type}
-              price={item.price}
-              region={item.region}
-              size={item.size}
-              onClick={() => console.log(`${item.type} 클릭됨`)}
+              key={item.id || idx} // API 데이터의 id 사용
+              img={item.imageUrls?.[0] || ''} // 안전한 접근
+              type={`${item.saleType} ${item.dealType}`} // 매물종류 + 거래방식
+              price={item.depositRent}
+              region={item.address || item.region} // address 우선, 없으면 region
+              size={item.area}
+              onClick={() => console.log(`${item.title} 클릭됨`)}
             />
           ))}
         </L.HomeList>

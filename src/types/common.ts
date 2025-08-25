@@ -32,3 +32,13 @@ export type SaleTypeEn = (typeof SaleTypeMap)[SaleTypeKo];
 
 export const convertDealType = (ko: DealTypeKo): DealTypeEn => DealTypeMap[ko];
 export const convertSaleType = (ko: SaleTypeKo): SaleTypeEn => SaleTypeMap[ko];
+
+export const reverseDealType = (en: DealTypeEn): DealTypeKo => {
+  const entry = Object.entries(DealTypeMap).find(([_, val]) => val === en);
+  return entry ? (entry[0] as DealTypeKo) : ('' as DealTypeKo);
+};
+
+export const reverseSaleType = (en: SaleTypeEn): SaleTypeKo => {
+  const entry = Object.entries(SaleTypeMap).find(([_, val]) => val === en);
+  return entry ? (entry[0] as SaleTypeKo) : ('' as SaleTypeKo);
+};
