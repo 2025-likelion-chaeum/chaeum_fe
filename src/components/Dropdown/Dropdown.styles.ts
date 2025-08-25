@@ -50,6 +50,11 @@ export const Sheet = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  @media (min-width: 768px) {
+    width: 360px;
+    margin: 0 auto;
+  }
 `;
 
 export const SheetItem = styled.div`
