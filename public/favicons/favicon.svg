@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="95" height="95"><svg width="95" height="95" viewBox="0 0 95 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="95" height="95" fill="#1D1D1D"></rect>
+<rect x="12" y="33" width="29" height="5" fill="white"></rect>
+<rect x="12" y="44" width="29" height="5" fill="white"></rect>
+<path d="M26.5 45L41 60.5H12L26.5 45Z" fill="white"></path>
+<path d="M68.5 33C76.5081 33 83 39.4919 83 47.5C83 55.5081 76.5081 62 68.5 62C60.4919 62 54 55.5081 54 47.5C54 39.4919 60.4919 33 68.5 33ZM68.5 39C63.8056 39 60 42.8056 60 47.5C60 52.1944 63.8056 56 68.5 56C73.1944 56 77 52.1944 77 47.5C77 42.8056 73.1944 39 68.5 39Z" fill="white"></path>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
