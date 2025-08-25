@@ -58,7 +58,7 @@ const ListPage = () => {
   const fetchData = async () => {
     try {
       const response = await postMap({
-        region: text,
+        region: text === '전국' ? null : text,
         saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
         dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
         priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
