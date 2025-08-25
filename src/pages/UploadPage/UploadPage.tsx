@@ -11,8 +11,8 @@ import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { RegisterHome } from '@/apis/Register/register';
 import type { RequestRegisterDto } from '@/types/Register/register';
-import type { DealTypeKo, SaleTypeKo } from '@/types/common';
-import { convertDealType, convertSaleType } from '@/types/common';
+import type { RequestRegisterImagesDto } from '@/types/Register/registerImage';
+import { useNavigate } from 'react-router-dom';
 
 type AddressData = {
   zonecode: string; // 우편번호
@@ -21,6 +21,7 @@ type AddressData = {
 };
 
 const UploadPage = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState<number>(1);
   const progress = Math.floor((state / 3) * 100);
   const [addressModal, setAddressModal] = useState(false);
@@ -30,6 +31,7 @@ const UploadPage = () => {
     if (!e.target.files) return;
 
     const newFiles = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+    const AddFiles = Array.from(e.target.files);
 
     const availableAddImages = 5 - houseImages.length;
 
@@ -46,11 +48,13 @@ const UploadPage = () => {
     }
 
     setHouseImages((prev) => [...prev, ...allowedFiles]);
+    setSendingImages((prev) => [...prev, ...AddFiles]);
     e.target.value = '';
   };
 
   const handleRemove = (idx: number) => {
     setHouseImages((prev) => prev.filter((_, i) => i !== idx));
+    setSendingImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const completeHandler = (data: AddressData) => {
@@ -75,6 +79,7 @@ const UploadPage = () => {
   const [dealType, setDealType] = useState<string | null>(null);
   const [saleType, setSaleType] = useState<string | null>(null);
   const [houseImages, setHouseImages] = useState<string[]>([]);
+  const [sendingImages, setSendingImages] = useState<File[]>([]);
   const [title, setTitle] = useState<string>('');
   const [depositRent, setDepositRent] = useState<string>('');
   const [area, setArea] = useState<string>('');
@@ -90,17 +95,35 @@ const UploadPage = () => {
   const [options, setOptions] = useState<string>('');
   const [etc, setEtc] = useState<string>('');
 
+  const SALE_TYPE_MAP: Record<string, string> = {
+    시골농가주택: 'RURAL_FARM_HOUSE',
+    전원주택: 'COUNTRY_HOUSE',
+    조립식주택: 'PREFAB_HOUSE',
+    '토지/임야': 'LAND',
+    '아파트/빌라': 'APARTMENT_VILLA',
+    '과수원/농장': 'ORCHARD_FARM',
+    '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+    '공장/창고': 'FACTORY_WAREHOUSE',
+  };
+
+  const DEAL_TYPE_MAP: Record<string, string> = {
+    매매: 'SALE',
+    임대: 'RENTAL',
+    전세: 'JEONSE',
+    월세: 'MONTHLYRENT',
+    단기: 'SHORTTERM',
+  };
+
   const handleRegister = async () => {
     try {
+      const mappedSaleType = dealType ? SALE_TYPE_MAP[dealType] : '';
+      const mappedDealType = saleType ? DEAL_TYPE_MAP[saleType] : '';
+
       const requestData: RequestRegisterDto = {
-        address: address?.address
-          ? (address.address.match(/^([가-힣]+도\s[가-힣]+시)/)?.[1] ??
-            address.address.match(/^([가-힣]+시\s[가-힣]+구)/)?.[1] ??
-            '')
-          : '',
-        dealType: convertDealType(dealType as DealTypeKo),
-        saleType: convertSaleType(saleType as SaleTypeKo),
-        imageUrls: houseImages,
+        address: address?.address ?? '',
+        dealType: mappedDealType,
+        saleType: mappedSaleType,
+        imageUrls: [],
         title,
         depositRent: depositRent,
         area: area,
@@ -117,8 +140,12 @@ const UploadPage = () => {
         etc: etc || null,
       };
 
-      const response = await RegisterHome(requestData);
-      console.log('등록 성공:', response);
+      const requestImageData: RequestRegisterImagesDto = { images: sendingImages || null };
+
+      const response = await RegisterHome(requestData, requestImageData);
+      console.log('등록 성공:', response.data.id);
+
+      navigate(`/list/${response.data.id}`);
     } catch (error) {
       console.error(error);
     }
@@ -249,7 +276,7 @@ const UploadPage = () => {
                   </U.UploadPhoto>
                   {houseImages.map((photo, idx) => (
                     <U.PhotoWrapper key={idx}>
-                      <U.Photo key={idx} src={photo} />
+                      <U.Photo src={photo} />
                       <U.RemovePhoto key={idx} src={remove} onClick={() => handleRemove(idx)} />
                     </U.PhotoWrapper>
                   ))}
