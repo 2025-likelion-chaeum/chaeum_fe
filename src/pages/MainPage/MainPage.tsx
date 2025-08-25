@@ -167,7 +167,7 @@ const MainPage = () => {
           {recommandData.map((item) => (
             <RecommandBox
               key={item.id}
-              img={item.imageUrls}
+              img={item.imageUrls[0]}
               type={item.saleType}
               price={item.depositRent}
               region={item.address}
@@ -192,7 +192,7 @@ const MainPage = () => {
           {HomeData.map((item) => (
             <HomeItem
               key={item.id}
-              img={item.imageUrls}
+              img={item.imageUrls[0]}
               type={item.saleType}
               price={item.depositRent}
               region={item.address}
