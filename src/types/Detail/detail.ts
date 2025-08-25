@@ -6,7 +6,7 @@ export type ResponseDetailDto = CommonResponse<{
   address: string;
   dealType: string;
   saleType: string;
-  imageUrls: [];
+  imageUrls: string[];
   title: string;
   depositRent: string;
   area: string;

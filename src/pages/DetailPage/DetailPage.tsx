@@ -1,6 +1,5 @@
 import * as D from './DetailPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
-import exampleImg from '@assets/ex_recHome.svg';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, useMotionValue } from 'motion/react';
@@ -101,7 +100,7 @@ const DetailPage = () => {
         )}
       </D.TopbarContainer>
 
-      <D.Image src={exampleImg} />
+      <D.Image src={homeData?.imageUrls[0]} />
 
       <AnimatePresence>
         <D.Sheet style={{ y }}>
