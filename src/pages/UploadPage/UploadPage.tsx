@@ -11,8 +11,6 @@ import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { RegisterHome } from '@/apis/Register/register';
 import type { RequestRegisterDto } from '@/types/Register/register';
-import type { DealTypeKo, SaleTypeKo } from '@/types/common';
-import { convertDealType, convertSaleType } from '@/types/common';
 
 type AddressData = {
   zonecode: string; // 우편번호
@@ -90,16 +88,34 @@ const UploadPage = () => {
   const [options, setOptions] = useState<string>('');
   const [etc, setEtc] = useState<string>('');
 
+  const SALE_TYPE_MAP: Record<string, string> = {
+    시골농가주택: 'RURAL_FARM_HOUSE',
+    전원주택: 'COUNTRY_HOUSE',
+    조립식주택: 'PREFAB_HOUSE',
+    '토지/임야': 'LAND',
+    '아파트/빌라': 'APARTMENT_VILLA',
+    '과수원/농장': 'ORCHARD_FARM',
+    '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+    '공장/창고': 'FACTORY_WAREHOUSE',
+  };
+
+  const DEAL_TYPE_MAP: Record<string, string> = {
+    매매: 'SALE',
+    임대: 'RENTAL',
+    전세: 'JEONSE',
+    월세: 'MONTHLYRENT',
+    단기: 'SHORTTERM',
+  };
+
   const handleRegister = async () => {
     try {
+      const mappedSaleType = dealType ? SALE_TYPE_MAP[dealType] : '';
+      const mappedDealType = saleType ? DEAL_TYPE_MAP[saleType] : '';
+
       const requestData: RequestRegisterDto = {
-        address: address?.address
-          ? (address.address.match(/^([가-힣]+도\s[가-힣]+시)/)?.[1] ??
-            address.address.match(/^([가-힣]+시\s[가-힣]+구)/)?.[1] ??
-            '')
-          : '',
-        dealType: convertDealType(dealType as DealTypeKo),
-        saleType: convertSaleType(saleType as SaleTypeKo),
+        address: address?.address ?? '',
+        dealType: mappedDealType,
+        saleType: mappedSaleType,
         imageUrls: houseImages,
         title,
         depositRent: depositRent,

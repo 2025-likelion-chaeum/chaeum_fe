@@ -1,9 +1,9 @@
-import type { CommonResponse, DealTypeEn, SaleTypeEn } from '../common';
+import type { CommonResponse } from '../common';
 
 export type RequestRegisterDto = {
   address: string;
-  dealType: DealTypeEn;
-  saleType: SaleTypeEn;
+  dealType: string;
+  saleType: string;
   imageUrls: string[];
   title: string;
   depositRent: string;
@@ -24,8 +24,8 @@ export type RequestRegisterDto = {
 export type ResponseRegisterDto = CommonResponse<{
   id: string;
   address: string;
-  dealType: DealTypeEn;
-  saleType: SaleTypeEn;
+  dealType: string;
+  saleType: string;
   imageUrls: string[];
   title: string;
   depositRent: string;
