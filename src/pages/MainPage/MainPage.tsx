@@ -67,8 +67,7 @@ const MainPage = () => {
       </M.Group>
       <M.Group>
         <div>
-          <M.Semibold18 style={{ marginBottom: '3px' }}>멋사 님이 관심있는</M.Semibold18>
-          <M.Semibold18>창업 공간을 위한 빈집들이에요</M.Semibold18>
+          <M.Semibold18>사용자가 관심 있어하는 빈집들이에요</M.Semibold18>
         </div>
         <M.ReccomandList>
           {recommandData.map((item) => (
