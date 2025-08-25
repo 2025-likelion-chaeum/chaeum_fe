@@ -10,8 +10,9 @@ import Input from '@/components/Input/Input';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { RegisterHome } from '@/apis/Register/register';
-import type { RequestRegisterDto, DealTypeKo, SaleTypeKo } from '@/types/Register/register';
-import { convertDealType, convertSaleType } from '@/types/Register/register';
+import type { RequestRegisterDto } from '@/types/Register/register';
+import type { DealTypeKo, SaleTypeKo } from '@/types/common';
+import { convertDealType, convertSaleType } from '@/types/common';
 
 type AddressData = {
   zonecode: string; // 우편번호
