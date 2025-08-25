@@ -112,6 +112,7 @@ const ListPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const handleSelect = (item: string) => {
     setSelectedCategories((prev) => (prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]));
@@ -125,14 +126,39 @@ const ListPage = () => {
     setSelectedPrices((prev) => (prev.includes(item) ? prev.filter((p) => p !== item) : [...prev, item]));
   };
 
+  const toggleDropdown = (key: string) => {
+    setOpenDropdown((prev) => (prev === key ? null : key));
+  };
+
   return (
     <>
       <Topbar text={text + '의 빈집들'} style="none" />
       <L.ListPage>
         <L.DropdownContaioner>
-          <Dropdown text={'매물 종류'} array={category} onSelect={handleSelect} selected={selectedCategories} />
-          <Dropdown text="거래 방식" array={method} onSelect={handleSelectMethod} selected={selectedMethods} />
-          <Dropdown text="가격 범위" array={price} onSelect={handleSelectPrice} selected={selectedPrices} />
+          <Dropdown
+            text={'매물 종류'}
+            array={category}
+            onSelect={handleSelect}
+            selected={selectedCategories}
+            isOpen={openDropdown === 'category'}
+            onToggle={() => toggleDropdown('category')}
+          />
+          <Dropdown
+            text="거래 방식"
+            array={method}
+            onSelect={handleSelectMethod}
+            selected={selectedMethods}
+            isOpen={openDropdown === 'method'}
+            onToggle={() => toggleDropdown('method')}
+          />
+          <Dropdown
+            text="가격 범위"
+            array={price}
+            onSelect={handleSelectPrice}
+            selected={selectedPrices}
+            isOpen={openDropdown === 'price'}
+            onToggle={() => toggleDropdown('price')}
+          />
         </L.DropdownContaioner>
         <L.HomeList>
           {HomeData.map((item, idx) => (

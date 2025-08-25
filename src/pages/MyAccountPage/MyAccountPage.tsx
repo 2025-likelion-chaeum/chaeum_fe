@@ -2,24 +2,53 @@ import { useNavigate } from 'react-router-dom';
 
 import * as M from './MyAccountPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
+import { useEffect, useState } from 'react';
+
+import { getMypage, postLogout } from '@/apis/Mypage/Mypage';
+import type { ResponseMypageDto } from '@/types/Mypage/Mypage';
 
 const MyAccountPage = () => {
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<ResponseMypageDto['data'] | null>(null);
 
   const myAccount = [
     {
       label: '이름',
-      content: '김멋사',
+      content: `${profileData?.name}`,
     },
     {
       label: '휴대전화',
-      content: '010-1234-5678',
+      content: `${profileData?.phoneNum}`,
     },
     {
       label: '이메일',
-      content: 'likelion123@naver.com',
+      content: `${profileData?.email}`,
     },
   ];
+
+  const handleLogout = async () => {
+    try {
+      const response = await postLogout();
+      console.log(response);
+
+      navigate('/login');
+    } catch (error) {
+      console.error('로그아웃 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    const getMypageData = async () => {
+      try {
+        const response = await getMypage();
+        setProfileData(response.data);
+      } catch (error) {
+        console.error('계정 정보 조회 실패', error);
+      }
+    };
+
+    getMypageData();
+  }, []);
 
   return (
     <>
@@ -38,7 +67,7 @@ const MyAccountPage = () => {
         </M.AccountWrapper>
 
         <M.ButtonWrapper>
-          <M.Button onClick={() => navigate('/login')}>로그아웃</M.Button>
+          <M.Button onClick={handleLogout}>로그아웃</M.Button>
         </M.ButtonWrapper>
       </M.MyAccountPage>
     </>

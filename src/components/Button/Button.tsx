@@ -17,7 +17,7 @@ import * as B from './Button.styles';
 
 interface ButtonProps {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
   type?: 'submit' | 'button';
   disabled?: boolean;
 }
