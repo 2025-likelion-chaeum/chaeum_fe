@@ -22,6 +22,9 @@ export const Topbar = styled.div<{ $style: string }>`
 
     color: ${({ $style }) => ($style === 'gradient' ? palette.grayscale.white : palette.grayscale.base)};
   }
+  @media (min-width: 768px) {
+    width: 360px;
+  }
 `;
 
 export const Text = styled.p<{ $style: string }>`
