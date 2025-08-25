@@ -33,6 +33,34 @@ type info = {
   size: string;
 };
 
+const SALE_TYPE_MAP: Record<string, string> = {
+  시골농가주택: 'RURAL_FARM_HOUSE',
+  전원주택: 'COUNTRY_HOUSE',
+  조립식주택: 'PREFAB_HOUSE',
+  '토지/임야': 'LAND',
+  '아파트/빌라': 'APARTMENT_VILLA',
+  '과수원/농장': 'ORCHARD_FARM',
+  '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+  '공장/창고': 'FACTORY_WAREHOUSE',
+};
+
+const DEAL_TYPE_MAP: Record<string, string> = {
+  매매: 'SALE',
+  임대: 'RENTAL',
+  전세: 'JEONSE',
+  월세: 'MONTHLYRENT',
+  단기: 'SHORTTERM',
+};
+
+const PRICE_RANGE_MAP: Record<string, { min: number; max: number | null }> = {
+  '천만원 미만': { min: 0, max: 10000000 },
+  '천만원 이상 5천만원 미만': { min: 10000000, max: 50000000 },
+  '5천만원 이상 1억원 미만': { min: 50000000, max: 100000000 },
+  '1억원 이상 5억원 미만': { min: 100000000, max: 500000000 },
+  '5억원 이상 10억원 미만': { min: 500000000, max: 1000000000 },
+  '10억원 이상': { min: 1000000000, max: null },
+};
+
 const MapPage = () => {
   const [info, setInfo] = useState<info>();
   const [showItem, setShowItem] = useState(false);
@@ -83,31 +111,35 @@ const MapPage = () => {
     setOpenDropdown((prev) => (prev === key ? null : key));
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await postMap({
+        region: null,
+        saleTypes: selectedType.map((t) => SALE_TYPE_MAP[t]),
+        dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
+        priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+        userOnly: false,
+        page: 0,
+        size: 80,
+      });
+
+      setMapData(response.data);
+    } catch (error) {
+      console.log('지도 불러오기 실패', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await postMap({
-          region: null,
-          saleTypes: ['COUNTRY_HOUSE'],
-          dealTypes: [],
-          priceRanges: [],
-          userOnly: false,
-          page: 0,
-          size: 80,
-        });
-
-        console.log(response);
-        setMapData(response.data);
-      } catch (error) {
-        console.log('지도 불러오기 실패', error);
-      }
-    };
-
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (mapData.length === 0) console.log(1);
+    if (selectedType.length || selectedMethods.length || selectedPrices.length) {
+      fetchData();
+    }
+  }, [selectedType, selectedMethods, selectedPrices]);
+
+  useEffect(() => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_KEY}&autoload=false&libraries=services,clusterer`;
     script.async = true;
@@ -228,7 +260,6 @@ const MapPage = () => {
 
               clusterer.addMarker(infowindow);
               clusterer.setStyles(style);
-              // map.setCenter(coords);
             }
           });
         });
