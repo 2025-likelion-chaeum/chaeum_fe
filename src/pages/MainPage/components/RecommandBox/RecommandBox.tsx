@@ -1,18 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import * as R from './RecommandBox.styles';
 
 interface RegionButtonProps {
+  id: number;
   img: string;
   type: string;
   price: string;
   region: string;
   size: string;
   tag: string[];
-  onClick: () => void;
 }
 
-const RecommandBox = ({ img, type, price, region, size, tag, onClick }: RegionButtonProps) => {
+const RecommandBox = ({ id, img, type, price, region, size, tag }: RegionButtonProps) => {
+  const navigate = useNavigate();
   return (
-    <R.RecommandBox onClick={onClick}>
+    <R.RecommandBox onClick={() => navigate(`/list/${id}`)}>
       <R.Img src={img} />
       <R.Info>
         <R.Regular12>{type}</R.Regular12>
