@@ -84,7 +84,7 @@ const MainPage = () => {
           ))}
         </M.Region>
       </M.Group>
-      {sell && (
+      {!sell && (
         <M.Group>
           <div>
             <M.Semibold18>사용자가 관심 있어하는 빈집들이에요</M.Semibold18>
