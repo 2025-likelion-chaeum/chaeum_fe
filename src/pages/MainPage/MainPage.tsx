@@ -13,6 +13,7 @@ const MainPage = () => {
   const navigate = useNavigate();
   const [recommandData, setRecommandData] = useState<ResponseMainDto['data']['recommended']>([]);
   const [HomeData, setHomeData] = useState<ResponseMainDto['data']['hot']>([]);
+  const [sell, setSell] = useState<boolean>(false);
 
   const SALE_TYPE_MAP: Record<string, string> = {
     시골농가주택: 'RURAL_FARM_HOUSE',
@@ -32,6 +33,11 @@ const MainPage = () => {
       try {
         const res = await getMain();
         console.log(res);
+        if (res.data.purpose === 'SELL') {
+          setSell(true);
+        } else {
+          setSell(false);
+        }
         setRecommandData(res.data.recommended);
         setHomeData(res.data.hot);
       } catch (error) {
@@ -78,25 +84,27 @@ const MainPage = () => {
           ))}
         </M.Region>
       </M.Group>
-      <M.Group>
-        <div>
-          <M.Semibold18>사용자가 관심 있어하는 빈집들이에요</M.Semibold18>
-        </div>
-        <M.ReccomandList>
-          {recommandData.map((item) => (
-            <RecommandBox
-              key={item.id}
-              id={item.id}
-              img={item.imageUrls[0]}
-              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
-              price={item.depositRent || '미정'}
-              region={item.address}
-              size={item.area || '불확실'}
-              tag={[]}
-            />
-          ))}
-        </M.ReccomandList>
-      </M.Group>
+      {sell && (
+        <M.Group>
+          <div>
+            <M.Semibold18>사용자가 관심 있어하는 빈집들이에요</M.Semibold18>
+          </div>
+          <M.ReccomandList>
+            {recommandData.map((item) => (
+              <RecommandBox
+                key={item.id}
+                id={item.id}
+                img={item.imageUrls[0]}
+                type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+                price={item.depositRent || '미정'}
+                region={item.address}
+                size={item.area || '불확실'}
+                tag={[]}
+              />
+            ))}
+          </M.ReccomandList>
+        </M.Group>
+      )}
       <M.Group>
         <M.Title>
           <M.Semibold18>방금 등록된 따끈한 빈집들</M.Semibold18>
