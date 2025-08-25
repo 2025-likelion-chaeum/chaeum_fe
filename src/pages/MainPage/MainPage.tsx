@@ -72,6 +72,7 @@ const MainPage = () => {
         <M.ReccomandList>
           {recommandData.map((item) => (
             <RecommandBox
+              key={item.id}
               id={item.id}
               img={item.imageUrls[0]}
               type={item.saleType}
@@ -96,6 +97,7 @@ const MainPage = () => {
         <M.HomeList>
           {HomeData.map((item) => (
             <HomeItem
+              key={item.id}
               id={item.id}
               img={item.imageUrls[0]}
               type={item.saleType}
