@@ -5,9 +5,11 @@ import * as M from './MapPage.styles';
 import HomeItem from '@/components/HomeItem/HomeItem';
 import Dropdown from '@/components/Dropdown/Dropdown';
 
-import locations from '@data/locations.json';
-import exampleImg from '@assets/ex_recHome.svg';
+import defaultImg from '@assets/default_img.svg?url';
+
 import { useNavigate } from 'react-router-dom';
+import { postMap } from '@/apis/Map/Map';
+import type { House } from '@/types/Map/Map';
 
 declare global {
   interface Window {
@@ -24,11 +26,39 @@ type KakaoResult = {
 type KakaoStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
 
 type info = {
-  img: React.ReactNode;
+  img: string;
   type: string;
   price: string;
   region: string;
   size: string;
+};
+
+const SALE_TYPE_MAP: Record<string, string> = {
+  시골농가주택: 'RURAL_FARM_HOUSE',
+  전원주택: 'COUNTRY_HOUSE',
+  조립식주택: 'PREFAB_HOUSE',
+  '토지/임야': 'LAND',
+  '아파트/빌라': 'APARTMENT_VILLA',
+  '과수원/농장': 'ORCHARD_FARM',
+  '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+  '공장/창고': 'FACTORY_WAREHOUSE',
+};
+
+const DEAL_TYPE_MAP: Record<string, string> = {
+  매매: 'SALE',
+  임대: 'RENTAL',
+  전세: 'JEONSE',
+  월세: 'MONTHLYRENT',
+  단기: 'SHORTTERM',
+};
+
+const PRICE_RANGE_MAP: Record<string, { min: number; max: number | null }> = {
+  '천만원 미만': { min: 0, max: 10000000 },
+  '천만원 이상 5천만원 미만': { min: 10000000, max: 50000000 },
+  '5천만원 이상 1억원 미만': { min: 50000000, max: 100000000 },
+  '1억원 이상 5억원 미만': { min: 100000000, max: 500000000 },
+  '5억원 이상 10억원 미만': { min: 500000000, max: 1000000000 },
+  '10억원 이상': { min: 1000000000, max: null },
 };
 
 const MapPage = () => {
@@ -38,6 +68,10 @@ const MapPage = () => {
   const [selectedType, setSelectedType] = useState<string[]>([]);
   const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
+
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const [mapData, setMapData] = useState<House[]>([]);
 
   const type = [
     '시골농가주택',
@@ -73,6 +107,38 @@ const MapPage = () => {
     setSelectedPrices((prev) => (prev.includes(item) ? prev.filter((p) => p !== item) : [...prev, item]));
   };
 
+  const toggleDropdown = (key: string) => {
+    setOpenDropdown((prev) => (prev === key ? null : key));
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await postMap({
+        region: null,
+        saleTypes: selectedType.map((t) => SALE_TYPE_MAP[t]),
+        dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
+        priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+        userOnly: false,
+        page: 0,
+        size: 80,
+      });
+
+      setMapData(response.data);
+    } catch (error) {
+      console.log('지도 불러오기 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedType.length || selectedMethods.length || selectedPrices.length) {
+      fetchData();
+    }
+  }, [selectedType, selectedMethods, selectedPrices]);
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_KEY}&autoload=false&libraries=services,clusterer`;
@@ -85,8 +151,8 @@ const MapPage = () => {
         if (!container) return;
 
         const options = {
-          center: new window.kakao.maps.LatLng(37.5665, 126.978),
-          level: 6,
+          center: new window.kakao.maps.LatLng(37.6213406, 127.0205069),
+          level: 4,
         };
 
         const map = new window.kakao.maps.Map(container, options);
@@ -95,7 +161,6 @@ const MapPage = () => {
 
         const clusterer = new window.kakao.maps.MarkerClusterer({
           map: map,
-          averageCenter: true,
           minLevel: 3,
         });
 
@@ -116,8 +181,8 @@ const MapPage = () => {
           },
         ];
 
-        locations.forEach((loc) => {
-          geocoder.addressSearch(loc.address, function (result: KakaoResult[], status: KakaoStatus) {
+        mapData?.forEach((loc) => {
+          geocoder.addressSearch(loc?.address, function (result: KakaoResult[], status: KakaoStatus) {
             if (status === window.kakao.maps.services.Status.OK) {
               const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
@@ -164,7 +229,7 @@ const MapPage = () => {
                       text-align: center;
                     "
                   >
-                    ${loc.cost}
+                    ${loc.depositRent || '미정'}
                   </div>
                 </div>
               `;
@@ -178,11 +243,11 @@ const MapPage = () => {
               content.addEventListener('click', () => {
                 setShowItem(true);
                 setInfo({
-                  img: exampleImg,
+                  img: loc.imageUrls[0] || defaultImg,
                   type: loc.region,
-                  price: loc.displayCost,
-                  region: loc.displayAddress,
-                  size: loc.size,
+                  price: loc.depositRent || '미정',
+                  region: loc.address,
+                  size: loc.area || '불확실',
                 });
               });
 
@@ -195,7 +260,6 @@ const MapPage = () => {
 
               clusterer.addMarker(infowindow);
               clusterer.setStyles(style);
-              map.setCenter(coords);
             }
           });
         });
@@ -205,7 +269,7 @@ const MapPage = () => {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [mapData]);
 
   const navigate = useNavigate();
 
@@ -213,14 +277,35 @@ const MapPage = () => {
     <>
       <M.MapPage id="map">
         <M.DropdownContaioner>
-          <Dropdown text="매물 종류" array={type} onSelect={handleSelect} selected={selectedType} />
-          <Dropdown text="거래 방식" array={method} onSelect={handleSelectMethod} selected={selectedMethods} />
-          <Dropdown text="거래 금액" array={price} onSelect={handleSelectPrice} selected={selectedPrices} />
+          <Dropdown
+            text="매물 종류"
+            array={type}
+            onSelect={handleSelect}
+            selected={selectedType}
+            isOpen={openDropdown === 'category'}
+            onToggle={() => toggleDropdown('category')}
+          />
+          <Dropdown
+            text="거래 방식"
+            array={method}
+            onSelect={handleSelectMethod}
+            selected={selectedMethods}
+            isOpen={openDropdown === 'method'}
+            onToggle={() => toggleDropdown('method')}
+          />
+          <Dropdown
+            text="거래 금액"
+            array={price}
+            onSelect={handleSelectPrice}
+            selected={selectedPrices}
+            isOpen={openDropdown === 'price'}
+            onToggle={() => toggleDropdown('price')}
+          />
         </M.DropdownContaioner>
         {showItem && (
           <M.HomeItemContainer style={{}}>
             <HomeItem
-              img={exampleImg}
+              img={info?.img || defaultImg}
               type={info?.type || ''}
               price={info?.price || ''}
               region={info?.region || ''}
