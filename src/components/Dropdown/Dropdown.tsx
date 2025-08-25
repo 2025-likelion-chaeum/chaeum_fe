@@ -2,7 +2,6 @@ import * as D from './Dropdown.styles';
 import dropdownDown from '@assets/icon-dropdown-12-down.svg';
 import dropdownUp from '@assets/icon-dropdown-12-up.svg';
 import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
 import palette from '@/styles/theme';
 
 /**
@@ -23,15 +22,15 @@ interface DropdownProps {
   array: string[];
   onSelect: (item: string) => void;
   selected: string[];
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-const Dropdown = ({ text, array, onSelect, selected }: DropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const Dropdown = ({ text, array, onSelect, selected, isOpen, onToggle }: DropdownProps) => {
   return (
     <>
       <D.DropdownContainer>
-        <D.Dropdown onClick={() => setIsOpen((prev) => !prev)}>
+        <D.Dropdown onClick={onToggle}>
           <D.Medium14>{text}</D.Medium14>
           <img src={isOpen ? dropdownUp : dropdownDown} />
         </D.Dropdown>
@@ -39,12 +38,7 @@ const Dropdown = ({ text, array, onSelect, selected }: DropdownProps) => {
       <AnimatePresence>
         {isOpen && (
           <>
-            <D.Backdrop
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-            />
+            <D.Backdrop initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }} onClick={onToggle} />
             {/* 바텀시트 */}
             <D.Sheet
               drag="y"
@@ -52,7 +46,7 @@ const Dropdown = ({ text, array, onSelect, selected }: DropdownProps) => {
               dragElastic={0.2}
               onDragEnd={(_, info) => {
                 if (info.offset.y > 100) {
-                  setIsOpen(false);
+                  onToggle();
                 }
               }}
               initial={{ y: '100%' }}
