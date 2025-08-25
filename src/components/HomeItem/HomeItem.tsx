@@ -1,17 +1,19 @@
 import * as R from '@pages/MainPage/components/RecommandBox/RecommandBox.styles';
+import { useNavigate } from 'react-router-dom';
 
 interface HomeItemProps {
+  id: number;
   img: string;
   type: string;
   price: string;
   region: string;
   size: string;
-  onClick: () => void;
 }
 
-const HomeItem = ({ img, type, price, region, size, onClick }: HomeItemProps) => {
+const HomeItem = ({ id, img, type, price, region, size }: HomeItemProps) => {
+  const navigate = useNavigate();
   return (
-    <R.HomeItemBox onClick={onClick}>
+    <R.HomeItemBox onClick={() => navigate(`/list/${id}`)}>
       <R.HomeImg src={img} />
       <R.Info>
         <R.Regular12>{type}</R.Regular12>

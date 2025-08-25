@@ -14,6 +14,19 @@ const MainPage = () => {
   const [recommandData, setRecommandData] = useState<ResponseMainDto['data']['recommended']>([]);
   const [HomeData, setHomeData] = useState<ResponseMainDto['data']['hot']>([]);
 
+  const SALE_TYPE_MAP: Record<string, string> = {
+    시골농가주택: 'RURAL_FARM_HOUSE',
+    전원주택: 'COUNTRY_HOUSE',
+    조립식주택: 'PREFAB_HOUSE',
+    '토지/임야': 'LAND',
+    '아파트/빌라': 'APARTMENT_VILLA',
+    '과수원/농장': 'ORCHARD_FARM',
+    '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+    '공장/창고': 'FACTORY_WAREHOUSE',
+  };
+
+  const SALE_TYPE_REVERSE_MAP = Object.fromEntries(Object.entries(SALE_TYPE_MAP).map(([ko, en]) => [en, ko]));
+
   useEffect(() => {
     const getMainData = async () => {
       try {
@@ -49,99 +62,6 @@ const MainPage = () => {
     '제주',
   ];
 
-  // const recommandData = [
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //     tag: ['조용한', '자연의'],
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //     tag: ['전통적인', '한적한', '문화'],
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //     tag: ['상권좋은', '교통편리'],
-  //   },
-  // ];
-
-  // const HomeData = [
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  // ];
-
   return (
     <M.MainPage>
       <M.Group>
@@ -160,20 +80,19 @@ const MainPage = () => {
       </M.Group>
       <M.Group>
         <div>
-          <M.Semibold18 style={{ marginBottom: '3px' }}>멋사 님이 관심있는</M.Semibold18>
-          <M.Semibold18>창업 공간을 위한 빈집들이에요</M.Semibold18>
+          <M.Semibold18>사용자가 관심 있어하는 빈집들이에요</M.Semibold18>
         </div>
         <M.ReccomandList>
           {recommandData.map((item) => (
             <RecommandBox
               key={item.id}
+              id={item.id}
               img={item.imageUrls[0]}
-              type={item.saleType}
-              price={item.depositRent}
+              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+              price={item.depositRent || '미정'}
               region={item.address}
-              size={item.area}
+              size={item.area || '불확실'}
               tag={[]}
-              onClick={() => console.log(`${item.saleType} 클릭됨`)}
             />
           ))}
         </M.ReccomandList>
@@ -192,12 +111,12 @@ const MainPage = () => {
           {HomeData.map((item) => (
             <HomeItem
               key={item.id}
+              id={item.id}
               img={item.imageUrls[0]}
-              type={item.saleType}
-              price={item.depositRent}
+              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+              price={item.depositRent || '미정'}
               region={item.address}
-              size={item.area}
-              onClick={() => console.log(`${item.saleType} 클릭됨`)}
+              size={item.area || '불확실'}
             />
           ))}
         </M.HomeList>

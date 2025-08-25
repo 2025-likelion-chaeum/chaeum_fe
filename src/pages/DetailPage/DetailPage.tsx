@@ -1,10 +1,5 @@
 import * as D from './DetailPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
-import exampleImg from '@assets/ex_recHome.svg';
-import BookMarkOff from '@assets/icon-bookmark-black-off.svg';
-import BookMarkOn from '@assets/icon-bookmark-black-on.svg';
-import BookMarkWhiteOff from '@assets/icon-bookmark-white-off.svg';
-import BookMarkWhiteOn from '@assets/icon-bookmark-white-on.svg';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, useMotionValue } from 'motion/react';
@@ -35,7 +30,6 @@ const DetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [homeData, setHomeData] = useState<ResponseDetailDto['data'] | null>(null);
 
-  const [bookMarkClicked, setBookMarkClicked] = useState<boolean>(false);
   const [blackTopbar, setBlackTopbar] = useState<boolean>(false);
   const [noTopBar, setNoTopbar] = useState<boolean>(false);
 
@@ -70,6 +64,7 @@ const DetailPage = () => {
           saleType: mappedSaleType,
           dealType: mappedDealType,
         });
+        console.log(res.data);
       } catch (err) {
         console.error('디테일 불러오기 실패', err);
       }
@@ -96,23 +91,16 @@ const DetailPage = () => {
         {noTopBar ? (
           <></>
         ) : blackTopbar ? (
-          <Topbar
-            text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
-            style="border"
-            icon={bookMarkClicked ? BookMarkOn : BookMarkOff}
-            onClickIcon={() => setBookMarkClicked((prev) => !prev)}
-          />
+          <Topbar text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`} style="border" />
         ) : (
           <Topbar
             text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
             style="gradient"
-            icon={bookMarkClicked ? BookMarkWhiteOn : BookMarkWhiteOff}
-            onClickIcon={() => setBookMarkClicked((prev) => !prev)}
           />
         )}
       </D.TopbarContainer>
 
-      <D.Image src={exampleImg} />
+      <D.Image src={homeData?.imageUrls[0]} />
 
       <AnimatePresence>
         <D.Sheet style={{ y }}>

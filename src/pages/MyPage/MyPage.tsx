@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as M from './MyPage.styles';
 import Profile from '@assets/icon-profile-56.svg?react';
-import Arrow from '@assets/icon-arrow-right.svg?react';
+// import Arrow from '@assets/icon-arrow-right.svg?react';
 import { useEffect, useState } from 'react';
 import type { ResponseMypageDto } from '@/types/Mypage/Mypage';
 import { getMypage } from '@/apis/Mypage/Mypage';
@@ -45,7 +45,7 @@ const MyPage = () => {
         </M.Wrapper>
       </M.Section>
 
-      <M.Section>
+      {/* <M.Section>
         <M.Menu>빈집 목록</M.Menu>
 
         <M.Wrapper onClick={() => handleNavigate('/list', '내가 등록한 빈집')} $pTop={12} $height={56}>
@@ -57,7 +57,7 @@ const MyPage = () => {
           <M.SemiBold>내가 스크랩한 빈집</M.SemiBold>
           <Arrow />
         </M.Wrapper>
-      </M.Section>
+      </M.Section> */}
     </M.MyPage>
   );
 };

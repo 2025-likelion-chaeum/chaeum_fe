@@ -29,6 +29,7 @@ export const Region = styled.div`
 
   width: 100%;
   overflow: scroll;
+  cursor: pointer;
 `;
 
 export const ReccomandList = styled.div`
@@ -52,6 +53,7 @@ export const Regular12 = styled.div`
   font-weight: 400;
   line-height: 140%;
   color: ${palette.grayscale['5e']};
+  cursor: pointer;
 `;
 
 export const HomeList = styled.div`

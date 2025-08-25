@@ -74,72 +74,6 @@ const ListPage = () => {
     }
   };
 
-  // const HomeData = [
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '농가주택 매매',
-  //     price: '매매 9,000만원',
-  //     region: '충청남도 서천군',
-  //     size: '대 529m²(160평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '한옥 임대',
-  //     price: '월세 50만원',
-  //     region: '전라북도 전주시',
-  //     size: '대 120m²(36평)',
-  //   },
-  //   {
-  //     img: exampleImg,
-  //     type: '상가 매매',
-  //     price: '매매 2억 5,000만원',
-  //     region: '경기도 고양시',
-  //     size: '대 200m²(60평)',
-  //   },
-  // ];
-
   const category = [
     '시골농가주택',
     '전원주택',
@@ -225,12 +159,12 @@ const ListPage = () => {
           {housesData?.map((item, idx) => (
             <HomeItem
               key={idx}
+              id={item.id}
               img={item.imageUrls[0] || defaultImg}
               type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
               price={item.depositRent || '미정'}
               region={item.address}
               size={item.area || '불확실'}
-              onClick={() => {}}
             />
           ))}
         </L.HomeList>

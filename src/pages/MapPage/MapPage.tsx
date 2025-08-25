@@ -7,7 +7,6 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 
 import defaultImg from '@assets/default_img.svg?url';
 
-import { useNavigate } from 'react-router-dom';
 import { postMap } from '@/apis/Map/Map';
 import type { House } from '@/types/Map/Map';
 
@@ -26,6 +25,7 @@ type KakaoResult = {
 type KakaoStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
 
 type info = {
+  id: number;
   img: string;
   type: string;
   price: string;
@@ -243,6 +243,7 @@ const MapPage = () => {
               content.addEventListener('click', () => {
                 setShowItem(true);
                 setInfo({
+                  id: loc.id,
                   img: loc.imageUrls[0] || defaultImg,
                   type: loc.region,
                   price: loc.depositRent || '미정',
@@ -270,8 +271,6 @@ const MapPage = () => {
       document.head.removeChild(script);
     };
   }, [mapData]);
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -305,12 +304,12 @@ const MapPage = () => {
         {showItem && (
           <M.HomeItemContainer style={{}}>
             <HomeItem
+              id={info?.id || 1}
               img={info?.img || defaultImg}
               type={info?.type || ''}
               price={info?.price || ''}
               region={info?.region || ''}
               size={info?.size || ''}
-              onClick={() => navigate('/list/1')}
             />
           </M.HomeItemContainer>
         )}

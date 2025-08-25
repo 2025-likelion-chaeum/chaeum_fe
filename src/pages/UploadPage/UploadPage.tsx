@@ -14,7 +14,6 @@ import type { RequestRegisterDto } from '@/types/Register/register';
 import type { RequestRegisterImagesDto } from '@/types/Register/registerImage';
 import { useNavigate } from 'react-router-dom';
 
-
 type AddressData = {
   zonecode: string; // 우편번호
   address: string; // 도로명 주소
@@ -159,7 +158,7 @@ const UploadPage = () => {
           <U.ProgressBarWrapper>
             <U.Progress progress={progress} />
           </U.ProgressBarWrapper>
-          <img src={close} />
+          <img src={close} onClick={() => navigate(-1)} style={{ cursor: 'pointer' }} />
         </U.Header>
         {state === 1 && (
           <>

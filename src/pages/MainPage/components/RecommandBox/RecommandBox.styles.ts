@@ -7,6 +7,7 @@ export const RecommandBox = styled.div`
   width: 192px;
   border-radius: 12px;
   border: 1px solid ${palette.grayscale.eb};
+  cursor: pointer;
 `;
 
 export const HomeItemBox = styled.div`
@@ -16,6 +17,7 @@ export const HomeItemBox = styled.div`
   border: 1px solid ${palette.grayscale.eb};
 
   background-color: ${palette.grayscale.white};
+  cursor: pointer;
 `;
 
 export const HomeImg = styled.img`
