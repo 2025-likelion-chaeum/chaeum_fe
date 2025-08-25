@@ -17,6 +17,7 @@ export const HomeItemBox = styled.div`
   border: 1px solid ${palette.grayscale.eb};
 
   background-color: ${palette.grayscale.white};
+  height: 84px;
   cursor: pointer;
 `;
 
