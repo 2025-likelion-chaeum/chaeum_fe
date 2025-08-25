@@ -3,10 +3,15 @@ import palette from '@styles/theme';
 import { motion } from 'motion/react';
 
 export const DetailPage = styled.div`
+  max-width: 360px;
   width: 100%;
+
+  margin: 0 auto;
 `;
 
 export const TopbarContainer = styled.div`
+  max-width: 360px;
+
   width: 100%;
   position: absolute;
   z-index: 1000;
@@ -32,6 +37,11 @@ export const Sheet = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  max-width: 360px;
+  width: 100%;
+
+  margin: 0 auto;
 
   @media (min-width: 768px) {
     width: 360px;
