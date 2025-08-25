@@ -12,6 +12,25 @@ import DetailItem from './components/DetailItem';
 import { getDetail } from '@/apis/Detail/detail';
 import type { ResponseDetailDto } from '@/types/Detail/detail';
 
+const SALE_TYPE_MAP: Record<string, string> = {
+  RURAL_FARM_HOUSE: '시골농가주택',
+  COUNTRY_HOUSE: '전원주택',
+  PREFAB_HOUSE: '조립식주택',
+  LAND: '토지/임야',
+  APARTMENT_VILLA: '아파트/빌라',
+  ORCHARD_FARM: '과수원/농장',
+  GUESTHOUSE_FARMSTAY: '민박펜션/체험농장',
+  FACTORY_WAREHOUSE: '공장/창고',
+};
+
+const DEAL_TYPE_MAP: Record<string, string> = {
+  SALE: '매매',
+  RENTAL: '임대',
+  JEONSE: '전세',
+  MONTHLYRENT: '월세',
+  SHORTTERM: '단기',
+};
+
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [homeData, setHomeData] = useState<ResponseDetailDto['data'] | null>(null);
@@ -40,12 +59,21 @@ const DetailPage = () => {
     const fetchData = async () => {
       try {
         const res = await getDetail(Number(id));
-        setHomeData(res.data);
+
+        const data = res.data;
+
+        const mappedSaleType = data.saleType ? SALE_TYPE_MAP[data.saleType] : '';
+        const mappedDealType = data.dealType ? DEAL_TYPE_MAP[data.dealType] : '';
+
+        setHomeData({
+          ...data,
+          saleType: mappedSaleType,
+          dealType: mappedDealType,
+        });
       } catch (err) {
         console.error('디테일 불러오기 실패', err);
       }
     };
-
     fetchData();
 
     return y.on('change', (latest) => {
@@ -69,14 +97,14 @@ const DetailPage = () => {
           <></>
         ) : blackTopbar ? (
           <Topbar
-            text="{빈집 제목 ex.농가주택 매매}"
+            text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
             style="border"
             icon={bookMarkClicked ? BookMarkOn : BookMarkOff}
             onClickIcon={() => setBookMarkClicked((prev) => !prev)}
           />
         ) : (
           <Topbar
-            text="{빈집 제목 ex.농가주택 매매}"
+            text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
             style="gradient"
             icon={bookMarkClicked ? BookMarkWhiteOn : BookMarkWhiteOff}
             onClickIcon={() => setBookMarkClicked((prev) => !prev)}
@@ -120,15 +148,18 @@ const DetailPage = () => {
                 {homeData?.options && <DetailItem title="옵션" content={homeData.options} />}
               </D.Detail>
 
-              <D.Detail>
-                <D.Semibold14>기타 정보</D.Semibold14>
-                <D.Regular14 style={{ whiteSpace: 'pre-line' }}>{homeData?.etc}</D.Regular14>
-              </D.Detail>
-
-              <D.Detail>
-                <D.Semibold14>연락처</D.Semibold14>
-                <D.Regular14>{homeData?.phoneNum}</D.Regular14>
-              </D.Detail>
+              {homeData?.etc && (
+                <D.Detail>
+                  <D.Semibold14>기타 정보</D.Semibold14>
+                  <D.Regular14 style={{ whiteSpace: 'pre-line' }}>{homeData?.etc}</D.Regular14>
+                </D.Detail>
+              )}
+              {homeData?.phoneNum && (
+                <D.Detail>
+                  <D.Semibold14>연락처</D.Semibold14>
+                  <D.Regular14>{homeData?.phoneNum}</D.Regular14>
+                </D.Detail>
+              )}
             </D.SheetContent>
           </D.SheetScroll>
         </D.Sheet>
