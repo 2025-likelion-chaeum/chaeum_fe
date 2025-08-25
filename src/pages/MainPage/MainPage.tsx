@@ -14,6 +14,19 @@ const MainPage = () => {
   const [recommandData, setRecommandData] = useState<ResponseMainDto['data']['recommended']>([]);
   const [HomeData, setHomeData] = useState<ResponseMainDto['data']['hot']>([]);
 
+  const SALE_TYPE_MAP: Record<string, string> = {
+    시골농가주택: 'RURAL_FARM_HOUSE',
+    전원주택: 'COUNTRY_HOUSE',
+    조립식주택: 'PREFAB_HOUSE',
+    '토지/임야': 'LAND',
+    '아파트/빌라': 'APARTMENT_VILLA',
+    '과수원/농장': 'ORCHARD_FARM',
+    '민박펜션/체험농장': 'GUESTHOUSE_FARMSTAY',
+    '공장/창고': 'FACTORY_WAREHOUSE',
+  };
+
+  const SALE_TYPE_REVERSE_MAP = Object.fromEntries(Object.entries(SALE_TYPE_MAP).map(([ko, en]) => [en, ko]));
+
   useEffect(() => {
     const getMainData = async () => {
       try {
@@ -75,10 +88,10 @@ const MainPage = () => {
               key={item.id}
               id={item.id}
               img={item.imageUrls[0]}
-              type={item.saleType}
-              price={item.depositRent}
+              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+              price={item.depositRent || '미정'}
               region={item.address}
-              size={item.area}
+              size={item.area || '불확실'}
               tag={[]}
             />
           ))}
@@ -100,10 +113,10 @@ const MainPage = () => {
               key={item.id}
               id={item.id}
               img={item.imageUrls[0]}
-              type={item.saleType}
-              price={item.depositRent}
+              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+              price={item.depositRent || '미정'}
               region={item.address}
-              size={item.area}
+              size={item.area || '불확실'}
             />
           ))}
         </M.HomeList>
