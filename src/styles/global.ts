@@ -38,6 +38,9 @@ const global = css`
   *::after {
     box-sizing: border-box;
   }
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 
   html,
   body {
