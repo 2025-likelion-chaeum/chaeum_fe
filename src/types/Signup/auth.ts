@@ -27,4 +27,5 @@ export type ResponseLoginDto = CommonResponse<{
   email: string;
   password: string;
   isFirstLogin: boolean;
+  token: string;
 }>;
