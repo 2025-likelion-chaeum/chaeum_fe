@@ -1,6 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import HomeLayout from '@/layouts/HomeLayout';
 import { lazyRoutes } from './routes';
+import ProtectedLayout from '@/layouts/ProtectedLayout';
 
 export const routes: RouteObject[] = [
   {
@@ -14,6 +15,19 @@ export const routes: RouteObject[] = [
       { path: 'login', element: <lazyRoutes.LoginPage /> },
       { path: 'signup', element: <lazyRoutes.SignupPage /> },
       { path: 'onboarding', element: <lazyRoutes.OnboardingPage /> },
+    ],
+  },
+];
+
+export const protectedRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <ProtectedLayout />,
+    children: [
+      {
+        index: true,
+        element: <lazyRoutes.MainPage />,
+      },
       { path: 'map', element: <lazyRoutes.MapPage /> },
       { path: 'list', element: <lazyRoutes.ListPage /> },
       { path: 'list/:id', element: <lazyRoutes.DetailPage /> },
@@ -25,4 +39,4 @@ export const routes: RouteObject[] = [
   },
 ];
 
-export const router = createBrowserRouter(routes);
+export const router = createBrowserRouter([...routes, ...protectedRoutes]);
