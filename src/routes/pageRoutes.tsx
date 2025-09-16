@@ -8,10 +8,6 @@ export const routes: RouteObject[] = [
     path: '/',
     element: <HomeLayout />,
     children: [
-      {
-        index: true,
-        element: <lazyRoutes.MainPage />,
-      },
       { path: 'login', element: <lazyRoutes.LoginPage /> },
       { path: 'signup', element: <lazyRoutes.SignupPage /> },
       { path: 'onboarding', element: <lazyRoutes.OnboardingPage /> },
