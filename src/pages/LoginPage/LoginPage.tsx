@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import * as L from './LoginPage.styles';
 import Logo from '@assets/logo.svg';
 import Button from '@components/Button/Button';
-import { postLogin } from '@/apis/Signup/auth';
+import { useAuth } from '@/context/AuthContext';
 
 const LoginPage = () => {
+  const { login } = useAuth();
+
   const schema = z.object({
     email: z.string(),
     password: z.string(),
@@ -34,13 +36,13 @@ const LoginPage = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const response = await postLogin(data);
+      const response = await login(data);
 
       console.log(response);
 
-      if (response.data?.isFirstLogin) {
+      if (response.isFirstLogin) {
         navigate('/onboarding', {
-          state: data.email,
+          state: response.email,
         });
       } else {
         navigate('/');
