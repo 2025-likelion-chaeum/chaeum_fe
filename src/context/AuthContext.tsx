@@ -2,20 +2,16 @@ import { postLogout } from '@/apis/Mypage/Mypage';
 import { postLogin } from '@/apis/Signup/auth';
 import { LOCAL_STORAGE_KEY } from '@/constants/key';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import type { RequestLoginDto } from '@/types/Signup/auth';
+import type { RequestLoginDto, ResponseLoginDto } from '@/types/Signup/auth';
 import { createContext, useContext, useState, type PropsWithChildren } from 'react';
 
 interface AuthContextType {
   token: string | null;
-  login: (body: RequestLoginDto) => Promise<void>;
+  login: (body: RequestLoginDto) => Promise<ResponseLoginDto['data']>;
   logout: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextType>({
-  token: null,
-  login: async () => {},
-  logout: async () => {},
-});
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const { getItem, setItem, removeItem } = useLocalStorage(LOCAL_STORAGE_KEY.token);
@@ -26,12 +22,16 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     try {
       const { data } = await postLogin(body);
 
-      if (data) {
-        const newToken = data.token;
-
-        setItem(newToken);
-        setToken(newToken);
+      if (!data) {
+        throw new Error('로그인 응답 없음');
       }
+
+      const newToken = data.token;
+
+      setItem(newToken);
+      setToken(newToken);
+
+      return data;
     } catch (error) {
       console.error('로그인 실패', error);
       throw error;
