@@ -25,7 +25,8 @@ export type RequestLoginDto = {
 
 export type ResponseLoginDto = CommonResponse<{
   email: string;
-  password: string;
+  id: number;
   isFirstLogin: boolean;
   token: string;
+  name: string;
 }>;
