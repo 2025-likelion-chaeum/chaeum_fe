@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, useMotionValue } from 'motion/react';
 import DetailItem from './components/DetailItem';
-import { getDetail, scrap } from '@/apis/Detail/detail';
+import { getDetail, scrap, deleteScrap } from '@/apis/Detail/detail';
 import type { ResponseDetailDto } from '@/types/Detail/detail';
 import BookMarkOff from '@assets/icon-bookmark-black-off.svg';
 import BookMarkOn from '@assets/icon-bookmark-black-on.svg';
@@ -92,8 +92,11 @@ const DetailPage = () => {
 
   const handleScrap = async () => {
     try {
-      const response = await scrap(Number(id));
-      console.log(response);
+      if (bookMarkClicked) {
+        await scrap(Number(id));
+      } else {
+        await deleteScrap(Number(id));
+      }
       setBookMarkClicked((prev) => !prev);
     } catch {
       alert('스크랩 실패');
