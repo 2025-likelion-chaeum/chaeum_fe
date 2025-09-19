@@ -25,3 +25,17 @@ export type ResponseDetailDto = CommonResponse<{
   phoneNum: string;
   region: string;
 }>;
+
+export type ResponseScrapDto = CommonResponse<{
+  isSuccess: boolean;
+  status: number;
+  error: string;
+  message: string;
+}>;
+
+export type ResponseDeleteScrapDto = CommonResponse<{
+  status: number;
+  code: string;
+  message: string;
+  data: string;
+}>;

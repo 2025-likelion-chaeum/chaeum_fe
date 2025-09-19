@@ -1,20 +1,23 @@
 import styled from '@emotion/styled';
 import palette from '@styles/theme';
-import { motion } from 'motion/react';
 
 export const DetailPage = styled.div`
-  max-width: 360px;
   width: 100%;
-
   margin: 0 auto;
+
+  @media (min-width: 768px) {
+    max-width: 360px;
+  }
 `;
 
 export const TopbarContainer = styled.div`
-  max-width: 360px;
-
   width: 100%;
   position: absolute;
   z-index: 1000;
+
+  @media (min-width: 768px) {
+    max-width: 360px;
+  }
 `;
 
 export const Image = styled.img`
@@ -25,10 +28,8 @@ export const Image = styled.img`
   bottom: 44px;
 `;
 
-export const Sheet = styled(motion.div)`
+export const Sheet = styled.div`
   position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
   background: white;
   border-radius: 16px 16px 0 0;
@@ -38,16 +39,12 @@ export const Sheet = styled(motion.div)`
   flex-direction: column;
   gap: 12px;
 
-  max-width: 360px;
   width: 100%;
 
   margin: 0 auto;
 
   @media (min-width: 768px) {
-    width: 360px;
-    left: calc(50% - 180px);
-    right: auto;
-    transform: translateX(-50%);
+    max-width: 360px;
   }
 `;
 
