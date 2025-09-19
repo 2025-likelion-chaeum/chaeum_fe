@@ -6,7 +6,7 @@ import Topbar from '@/components/Topbar/Topbar';
 import HomeItem from '@components/HomeItem/HomeItem';
 import Dropdown from '@components/Dropdown/Dropdown';
 import type { House } from '@/types/Map/Map';
-import { postMap } from '@/apis/Map/Map';
+import { postMap, getMyHouse, getMyScrap } from '@/apis/Map/Map';
 import defaultImg from '@assets/default_img.svg?url';
 
 /**
@@ -57,17 +57,22 @@ const ListPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await postMap({
-        region: text === '전국' ? null : text,
-        saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
-        dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
-        priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
-        userOnly: false,
-        page: 0,
-        size: 80,
-      });
-      console.log(response);
+      const response =
+        from === 'main'
+          ? await postMap({
+              region: text === '전국' ? null : text,
+              saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
+              dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
+              priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+              userOnly: false,
+              page: 0,
+              size: 80,
+            })
+          : text === '내가 등록한 빈집'
+            ? await getMyHouse()
+            : await getMyScrap();
 
+      console.log(response.data);
       setHousesData(response.data);
     } catch (error) {
       console.error(error);
@@ -122,9 +127,7 @@ const ListPage = () => {
   }, []);
 
   useEffect(() => {
-    if (from === 'main') {
-      fetchData();
-    }
+    fetchData();
   }, [selectedCategories.length, selectedMethods.length, selectedPrices.length]);
 
   return (
