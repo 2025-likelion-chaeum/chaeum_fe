@@ -2,20 +2,25 @@ import styled from '@emotion/styled';
 import palette from '@styles/theme';
 
 export const DetailPage = styled.div`
-  max-width: 360px;
   width: 100%;
   margin: 0 auto;
 
   display: flex;
   justify-content: center;
+
+  @media (min-width: 768px) {
+    max-width: 360px;
+  }
 `;
 
 export const TopbarContainer = styled.div`
-  max-width: 360px;
-
   width: 100%;
   position: absolute;
   z-index: 1000;
+
+  @media (min-width: 768px) {
+    max-width: 360px;
+  }
 `;
 
 export const Image = styled.img`
@@ -37,10 +42,13 @@ export const Sheet = styled.div`
   flex-direction: column;
   gap: 12px;
 
-  max-width: 360px;
   width: 100%;
 
   margin: 0 auto;
+
+  @media (min-width: 768px) {
+    max-width: 360px;
+  }
 `;
 
 export const SheetScroll = styled.div`
