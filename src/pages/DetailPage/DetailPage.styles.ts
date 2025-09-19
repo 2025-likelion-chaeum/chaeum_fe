@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import palette from '@styles/theme';
-import { motion } from 'motion/react';
 
 export const DetailPage = styled.div`
   max-width: 360px;
   width: 100%;
-
   margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
 `;
 
 export const TopbarContainer = styled.div`
@@ -25,10 +26,8 @@ export const Image = styled.img`
   bottom: 44px;
 `;
 
-export const Sheet = styled(motion.div)`
+export const Sheet = styled.div`
   position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
   background: white;
   border-radius: 16px 16px 0 0;
@@ -42,13 +41,6 @@ export const Sheet = styled(motion.div)`
   width: 100%;
 
   margin: 0 auto;
-
-  @media (min-width: 768px) {
-    width: 360px;
-    left: calc(50% - 180px);
-    right: auto;
-    transform: translateX(-50%);
-  }
 `;
 
 export const SheetScroll = styled.div`
