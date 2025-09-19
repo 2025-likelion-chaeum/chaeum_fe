@@ -5,9 +5,6 @@ export const DetailPage = styled.div`
   width: 100%;
   margin: 0 auto;
 
-  display: flex;
-  justify-content: center;
-
   @media (min-width: 768px) {
     max-width: 360px;
   }
