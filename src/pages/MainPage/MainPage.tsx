@@ -78,7 +78,7 @@ const MainPage = () => {
               key={region}
               text={region}
               onClick={() => {
-                navigate('/list', { state: { text: region } });
+                navigate('/list', { state: { text: region, from: 'main' } });
               }}
             />
           ))}
@@ -110,7 +110,7 @@ const MainPage = () => {
           <M.Semibold18>방금 등록된 따끈한 빈집들</M.Semibold18>
           <M.Regular12
             onClick={() => {
-              navigate('/list', { state: { text: '전국' } });
+              navigate('/list', { state: { text: '전국', from: 'main' } });
             }}>
             더 보러가기
           </M.Regular12>

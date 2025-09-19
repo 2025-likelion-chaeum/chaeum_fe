@@ -21,7 +21,7 @@ import defaultImg from '@assets/default_img.svg?url';
 
 const ListPage = () => {
   const location = useLocation();
-  const { text } = location.state || {};
+  const { text, from } = location.state || {};
 
   const SALE_TYPE_MAP: Record<string, string> = {
     시골농가주택: 'RURAL_FARM_HOUSE',
@@ -122,12 +122,14 @@ const ListPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    if (from === 'main') {
+      fetchData();
+    }
   }, [selectedCategories.length, selectedMethods.length, selectedPrices.length]);
 
   return (
     <>
-      <Topbar text={text + '의 빈집들'} style="none" />
+      <Topbar text={from === 'main' ? text + '의 빈집들' : text} style="none" />
       <L.ListPage>
         <L.DropdownContaioner>
           <Dropdown
