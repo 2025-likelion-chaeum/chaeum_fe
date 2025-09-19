@@ -4,8 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, useMotionValue } from 'motion/react';
 import DetailItem from './components/DetailItem';
-import { getDetail } from '@/apis/Detail/detail';
+import { getDetail, scrap } from '@/apis/Detail/detail';
 import type { ResponseDetailDto } from '@/types/Detail/detail';
+import BookMarkOff from '@assets/icon-bookmark-black-off.svg';
+import BookMarkOn from '@assets/icon-bookmark-black-on.svg';
+import BookMarkWhiteOff from '@assets/icon-bookmark-white-off.svg';
+import BookMarkWhiteOn from '@assets/icon-bookmark-white-on.svg';
 
 const SALE_TYPE_MAP: Record<string, string> = {
   RURAL_FARM_HOUSE: '시골농가주택',
@@ -32,6 +36,7 @@ const DetailPage = () => {
 
   const [blackTopbar, setBlackTopbar] = useState<boolean>(false);
   const [noTopBar, setNoTopbar] = useState<boolean>(false);
+  const [bookMarkClicked, setBookMarkClicked] = useState<boolean>(false);
 
   const y = useMotionValue(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -85,17 +90,34 @@ const DetailPage = () => {
     });
   }, [y, id]);
 
+  const handleScrap = async () => {
+    try {
+      const response = await scrap(Number(id));
+      console.log(response);
+      setBookMarkClicked((prev) => !prev);
+    } catch {
+      alert('스크랩 실패');
+    }
+  };
+
   return (
     <D.DetailPage>
       <D.TopbarContainer>
         {noTopBar ? (
           <></>
         ) : blackTopbar ? (
-          <Topbar text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`} style="border" />
+          <Topbar
+            text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
+            style="border"
+            icon={bookMarkClicked ? BookMarkOn : BookMarkOff}
+            onClickIcon={handleScrap}
+          />
         ) : (
           <Topbar
             text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
             style="gradient"
+            icon={bookMarkClicked ? BookMarkWhiteOn : BookMarkWhiteOff}
+            onClickIcon={handleScrap}
           />
         )}
       </D.TopbarContainer>
