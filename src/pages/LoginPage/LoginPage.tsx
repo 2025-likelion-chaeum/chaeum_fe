@@ -38,8 +38,6 @@ const LoginPage = () => {
     try {
       const response = await login(data);
 
-      console.log(response);
-
       if (response.isFirstLogin) {
         navigate('/onboarding', {
           state: response.email,

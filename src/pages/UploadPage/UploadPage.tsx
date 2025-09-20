@@ -143,7 +143,6 @@ const UploadPage = () => {
       const requestImageData: RequestRegisterImagesDto = { images: sendingImages || null };
 
       const response = await RegisterHome(requestData, requestImageData);
-      console.log('등록 성공:', response.data.id);
 
       navigate(`/list/${response.data.id}`);
     } catch (error) {

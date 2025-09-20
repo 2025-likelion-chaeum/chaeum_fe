@@ -43,8 +43,7 @@ const OnboardingPage = () => {
     };
 
     try {
-      const res = await postOnboarding(requestData);
-      console.log(res);
+      await postOnboarding(requestData);
 
       navigate('/');
     } catch (error) {

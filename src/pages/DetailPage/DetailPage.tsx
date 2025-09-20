@@ -50,7 +50,6 @@ const DetailPage = () => {
           dealType: mappedDealType,
         });
         setBookMarkClicked(data.scrapped);
-        console.log(res.data);
       } catch (err) {
         console.error('디테일 불러오기 실패', err);
       }

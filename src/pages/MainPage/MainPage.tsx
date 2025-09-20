@@ -32,7 +32,6 @@ const MainPage = () => {
     const getMainData = async () => {
       try {
         const res = await getMain();
-        console.log(res);
         if (res.data.purpose === 'SELL') {
           setSell(true);
         } else {

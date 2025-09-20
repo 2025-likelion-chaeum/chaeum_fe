@@ -71,8 +71,6 @@ const ListPage = () => {
           : text === '내가 등록한 빈집'
             ? await getMyHouse()
             : await getMyScrap();
-
-      console.log(response.data);
       setHousesData(response.data);
     } catch (error) {
       console.error(error);
