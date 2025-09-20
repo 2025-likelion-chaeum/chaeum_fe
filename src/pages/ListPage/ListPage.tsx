@@ -128,45 +128,65 @@ const ListPage = () => {
     <>
       <Topbar text={from === 'main' ? text + '의 빈집들' : text} style="none" />
       <L.ListPage>
-        <L.DropdownContaioner>
-          <Dropdown
-            text={'매물 종류'}
-            array={category}
-            onSelect={handleSelect}
-            selected={selectedCategories}
-            isOpen={openDropdown === 'category'}
-            onToggle={() => toggleDropdown('category')}
-          />
-          <Dropdown
-            text="거래 방식"
-            array={method}
-            onSelect={handleSelectMethod}
-            selected={selectedMethods}
-            isOpen={openDropdown === 'method'}
-            onToggle={() => toggleDropdown('method')}
-          />
-          <Dropdown
-            text="가격 범위"
-            array={price}
-            onSelect={handleSelectPrice}
-            selected={selectedPrices}
-            isOpen={openDropdown === 'price'}
-            onToggle={() => toggleDropdown('price')}
-          />
-        </L.DropdownContaioner>
-        <L.HomeList>
-          {housesData?.map((item, idx) => (
-            <HomeItem
-              key={idx}
-              id={item.id}
-              img={(item.imageUrls && item.imageUrls[0]) || item.thumbnailUrl || defaultImg}
-              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
-              price={item.depositRent || '미정'}
-              region={item.address}
-              size={item.area || '불확실'}
+        {from !== 'main' && housesData.length === 0 ? (
+          <></>
+        ) : (
+          <L.DropdownContaioner>
+            <Dropdown
+              text={'매물 종류'}
+              array={category}
+              onSelect={handleSelect}
+              selected={selectedCategories}
+              isOpen={openDropdown === 'category'}
+              onToggle={() => toggleDropdown('category')}
             />
-          ))}
-        </L.HomeList>
+            <Dropdown
+              text="거래 방식"
+              array={method}
+              onSelect={handleSelectMethod}
+              selected={selectedMethods}
+              isOpen={openDropdown === 'method'}
+              onToggle={() => toggleDropdown('method')}
+            />
+            <Dropdown
+              text="가격 범위"
+              array={price}
+              onSelect={handleSelectPrice}
+              selected={selectedPrices}
+              isOpen={openDropdown === 'price'}
+              onToggle={() => toggleDropdown('price')}
+            />
+          </L.DropdownContaioner>
+        )}
+        {housesData.length !== 0 ? (
+          <L.HomeList>
+            {housesData?.map((item, idx) => (
+              <HomeItem
+                key={idx}
+                id={item.id}
+                img={(item.imageUrls && item.imageUrls[0]) || item.thumbnailUrl || defaultImg}
+                type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+                price={item.depositRent || '미정'}
+                region={item.address}
+                size={item.area || '불확실'}
+              />
+            ))}
+          </L.HomeList>
+        ) : from === 'main' ? (
+          <L.NoneDataInfo>
+            <L.Medium14>조건에 맞는 빈집이 없어요!</L.Medium14>
+          </L.NoneDataInfo>
+        ) : text === '내가 등록한 빈집' ? (
+          <L.NoneDataInfo>
+            <L.Medium14>아직 등록한 빈집이 없네요!</L.Medium14>
+            <L.Medium14>첫 번째 빈집을 올려보세요.</L.Medium14>
+          </L.NoneDataInfo>
+        ) : (
+          <L.NoneDataInfo>
+            <L.Medium14>스크랩한 빈집이 아직 없네요!</L.Medium14>
+            <L.Medium14>마음에 드는 빈집을 저장해볼까요?</L.Medium14>
+          </L.NoneDataInfo>
+        )}
       </L.ListPage>
     </>
   );
