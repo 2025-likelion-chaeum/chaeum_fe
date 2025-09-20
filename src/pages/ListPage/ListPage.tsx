@@ -6,7 +6,7 @@ import Topbar from '@/components/Topbar/Topbar';
 import HomeItem from '@components/HomeItem/HomeItem';
 import Dropdown from '@components/Dropdown/Dropdown';
 import type { House } from '@/types/Map/Map';
-import { postMap } from '@/apis/Map/Map';
+import { postMap, getMyHouse, getMyScrap } from '@/apis/Map/Map';
 import defaultImg from '@assets/default_img.svg?url';
 
 /**
@@ -21,7 +21,7 @@ import defaultImg from '@assets/default_img.svg?url';
 
 const ListPage = () => {
   const location = useLocation();
-  const { text } = location.state || {};
+  const { text, from } = location.state || {};
 
   const SALE_TYPE_MAP: Record<string, string> = {
     시골농가주택: 'RURAL_FARM_HOUSE',
@@ -57,17 +57,20 @@ const ListPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await postMap({
-        region: text === '전국' ? null : text,
-        saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
-        dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
-        priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
-        userOnly: false,
-        page: 0,
-        size: 80,
-      });
-      console.log(response);
-
+      const response =
+        from === 'main'
+          ? await postMap({
+              region: text === '전국' ? null : text,
+              saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
+              dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
+              priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+              userOnly: false,
+              page: 0,
+              size: 80,
+            })
+          : text === '내가 등록한 빈집'
+            ? await getMyHouse()
+            : await getMyScrap();
       setHousesData(response.data);
     } catch (error) {
       console.error(error);
@@ -119,15 +122,11 @@ const ListPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    fetchData();
   }, [selectedCategories.length, selectedMethods.length, selectedPrices.length]);
 
   return (
     <>
-      <Topbar text={text + '의 빈집들'} style="none" />
+      <Topbar text={from === 'main' ? text + '의 빈집들' : text} style="none" />
       <L.ListPage>
         <L.DropdownContaioner>
           <Dropdown
@@ -160,7 +159,7 @@ const ListPage = () => {
             <HomeItem
               key={idx}
               id={item.id}
-              img={item.imageUrls[0] || defaultImg}
+              img={(item.imageUrls && item.imageUrls[0]) || item.thumbnailUrl || defaultImg}
               type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
               price={item.depositRent || '미정'}
               region={item.address}

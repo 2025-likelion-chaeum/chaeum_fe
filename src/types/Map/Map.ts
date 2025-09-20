@@ -26,7 +26,8 @@ export type House = {
   dealType: string | null;
   depositRent: string | null;
   area: string | null;
-  imageUrls: string[];
+  imageUrls: string[] | null;
+  thumbnailUrl: string | null;
   postedOn: string;
 };
 

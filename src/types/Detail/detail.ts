@@ -24,6 +24,7 @@ export type ResponseDetailDto = CommonResponse<{
   postedOn: string;
   phoneNum: string;
   region: string;
+  scrapped: boolean;
 }>;
 
 export type ResponseScrapDto = CommonResponse<{

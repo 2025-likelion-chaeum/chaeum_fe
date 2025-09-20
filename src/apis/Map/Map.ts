@@ -7,3 +7,13 @@ export const postMap = async (body: RequestMapDto): Promise<ResponseMapDto> => {
 
   return data;
 };
+
+export const getMyHouse = async (): Promise<ResponseMapDto> => {
+  const { data } = await axiosInstance.get('/user/myhouse');
+  return data;
+};
+
+export const getMyScrap = async (): Promise<ResponseMapDto> => {
+  const { data } = await axiosInstance.get('/user/myscrap');
+  return data;
+};

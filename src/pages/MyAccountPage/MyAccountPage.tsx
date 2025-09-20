@@ -28,8 +28,7 @@ const MyAccountPage = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await postLogout();
-      console.log(response);
+      await postLogout();
 
       navigate('/login');
     } catch (error) {

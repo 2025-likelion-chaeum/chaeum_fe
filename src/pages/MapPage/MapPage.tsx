@@ -244,7 +244,7 @@ const MapPage = () => {
                 setShowItem(true);
                 setInfo({
                   id: loc.id,
-                  img: loc.imageUrls[0] || defaultImg,
+                  img: loc.imageUrls?.[0] || defaultImg,
                   type: loc.region,
                   price: loc.depositRent || '미정',
                   region: loc.address,

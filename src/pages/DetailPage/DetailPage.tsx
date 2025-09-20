@@ -49,7 +49,7 @@ const DetailPage = () => {
           saleType: mappedSaleType,
           dealType: mappedDealType,
         });
-        console.log(res.data);
+        setBookMarkClicked(data.scrapped);
       } catch (err) {
         console.error('디테일 불러오기 실패', err);
       }
@@ -60,11 +60,12 @@ const DetailPage = () => {
   const handleScrap = async () => {
     try {
       if (bookMarkClicked) {
-        await scrap(Number(id));
-      } else {
         await deleteScrap(Number(id));
+        setBookMarkClicked(false);
+      } else {
+        await scrap(Number(id));
+        setBookMarkClicked(true);
       }
-      setBookMarkClicked((prev) => !prev);
     } catch {
       alert('스크랩 실패');
     }
