@@ -124,10 +124,6 @@ const ListPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    fetchData();
   }, [selectedCategories.length, selectedMethods.length, selectedPrices.length]);
 
   return (
@@ -165,7 +161,7 @@ const ListPage = () => {
             <HomeItem
               key={idx}
               id={item.id}
-              img={item.imageUrls[0] || defaultImg}
+              img={(item.imageUrls && item.imageUrls[0]) || item.thumbnailUrl || defaultImg}
               type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
               price={item.depositRent || '미정'}
               region={item.address}
