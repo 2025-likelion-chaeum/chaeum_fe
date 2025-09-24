@@ -28,6 +28,7 @@ export const HomeImg = styled.img`
 `;
 
 export const Img = styled.img`
+  width: 192px;
   height: 160px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
