@@ -13,6 +13,7 @@ import { RegisterHome } from '@/apis/Register/register';
 import type { RequestRegisterDto } from '@/types/Register/register';
 import type { RequestRegisterImagesDto } from '@/types/Register/registerImage';
 import { useNavigate } from 'react-router-dom';
+import palette from '@styles/theme';
 
 type AddressData = {
   zonecode: string; // 우편번호
@@ -22,10 +23,11 @@ type AddressData = {
 
 const UploadPage = () => {
   const navigate = useNavigate();
-  const [state, setState] = useState<number>(1);
+  const [state, setState] = useState<number>(2);
   const progress = Math.floor((state / 3) * 100);
   const [addressModal, setAddressModal] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [showCheckbox, setShowCheckbox] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -75,9 +77,19 @@ const UploadPage = () => {
 
   const method = ['매매', '임대', '전세', '월세', '단기'];
 
+  const priceRange = [
+    '천만원 미만',
+    '천만원 이상 5천만원 미만',
+    '5천만원 이상 1억원 미만',
+    '1억원 이상 5억원 미만',
+    '5억원 이상 10억원 미만',
+    '10억원 이상',
+  ];
+
   const [address, setAddress] = useState<AddressData | null>(null);
   const [dealType, setDealType] = useState<string | null>(null);
   const [saleType, setSaleType] = useState<string | null>(null);
+  const [priceType, setPriceType] = useState<string | null>(null);
   const [houseImages, setHouseImages] = useState<string[]>([]);
   const [sendingImages, setSendingImages] = useState<File[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -114,15 +126,26 @@ const UploadPage = () => {
     단기: 'SHORTTERM',
   };
 
+  const PRICE_TYPE_MAP: Record<string, string> = {
+    '천만원 미만': 'UNDER_10M',
+    '천만원 이상 5천만원 미만': 'BETWEEN_10M_50M',
+    '5천만원 이상 1억원 미만': 'BETWEEN_50M_100M',
+    '1억원 이상 5억원 미만': 'BETWEEN_100M_500M',
+    '5억원 이상 10억원 미만': 'BETWEEN_500M_1000M',
+    '10억원 이상': 'OVER_1000M',
+  };
+
   const handleRegister = async () => {
     try {
       const mappedSaleType = dealType ? SALE_TYPE_MAP[dealType] : '';
       const mappedDealType = saleType ? DEAL_TYPE_MAP[saleType] : '';
+      const mappedPriceType = priceType ? PRICE_TYPE_MAP[priceType] : '';
 
       const requestData: RequestRegisterDto = {
         address: address?.address ?? '',
         dealType: mappedDealType,
         saleType: mappedSaleType,
+        priceType: mappedPriceType,
         imageUrls: [],
         title,
         depositRent: depositRent,
@@ -248,6 +271,34 @@ const UploadPage = () => {
                   onChange={(e) => setDepositRent(e.target.value)}
                 />
               </U.Group>
+              <U.Group>
+                <U.Semibold16>보증금/임대료 등 가격대 </U.Semibold16>
+                <U.PriceBox
+                  onClick={() => setShowCheckbox((prev) => !prev)}
+                  style={{ color: priceType ? palette.grayscale.base : palette.grayscale[88], height: '44px' }}>
+                  {priceType ?? '추후 보증금·임대료 필터에 반영됩니다'}
+                </U.PriceBox>
+              </U.Group>
+              {showCheckbox && (
+                <U.PriceGroup>
+                  {priceRange.map((item) => {
+                    const isSelected = priceType === item;
+                    return (
+                      <U.PriceBox
+                        key={item}
+                        onClick={() => {
+                          setPriceType(item);
+                          setShowCheckbox(false);
+                        }}
+                        style={{
+                          backgroundColor: isSelected ? palette.grayscale.eb : 'white',
+                        }}>
+                        {item}
+                      </U.PriceBox>
+                    );
+                  })}
+                </U.PriceGroup>
+              )}
               <U.Group>
                 <U.Semibold16>면적</U.Semibold16>
                 <Input
