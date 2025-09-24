@@ -275,7 +275,7 @@ const UploadPage = () => {
                 <U.Semibold16>보증금/임대료 등 가격대 </U.Semibold16>
                 <U.PriceBox
                   onClick={() => setShowCheckbox((prev) => !prev)}
-                  style={{ color: priceType ?? palette.grayscale[88], height: '44px' }}>
+                  style={{ color: priceType ? palette.grayscale.base : palette.grayscale[88], height: '44px' }}>
                   {priceType ?? '추후 보증금·임대료 필터에 반영됩니다'}
                 </U.PriceBox>
               </U.Group>

@@ -61,7 +61,6 @@ export const PriceBox = styled.div`
   border: 1px solid ${palette.grayscale.de};
   background-color: ${palette.grayscale.white};
 
-  color: ${palette.grayscale.base};
   font-size: 14px;
   font-weight: 500;
   line-height: 140%;
