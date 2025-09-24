@@ -117,7 +117,7 @@ const MapPage = () => {
         region: null,
         saleTypes: selectedType.map((t) => SALE_TYPE_MAP[t]),
         dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
-        priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+        priceTypes: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
         userOnly: false,
         page: 0,
         size: 80,

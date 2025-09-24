@@ -63,7 +63,7 @@ const ListPage = () => {
               region: text === '전국' ? null : text,
               saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
               dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
-              priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+              priceTypes: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
               userOnly: false,
               page: 0,
               size: 80,
@@ -72,7 +72,6 @@ const ListPage = () => {
             ? await getMyHouse()
             : await getMyScrap();
       setHousesData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }

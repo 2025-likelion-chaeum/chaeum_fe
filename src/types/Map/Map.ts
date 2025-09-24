@@ -4,7 +4,7 @@ export type RequestMapDto = {
   region: null | string;
   saleTypes: string[];
   dealTypes: string[];
-  priceRanges: string[];
+  priceTypes: string[];
   userOnly: boolean;
   page: number;
   size: number;
