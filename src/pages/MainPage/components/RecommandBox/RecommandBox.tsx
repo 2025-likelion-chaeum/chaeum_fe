@@ -5,20 +5,20 @@ interface RegionButtonProps {
   id: number;
   img: string;
   type: string;
-  price: string;
+  title: string;
   region: string;
   size: string;
   tag: string[];
 }
 
-const RecommandBox = ({ id, img, type, price, region, size, tag }: RegionButtonProps) => {
+const RecommandBox = ({ id, img, type, title, region, size, tag }: RegionButtonProps) => {
   const navigate = useNavigate();
   return (
     <R.RecommandBox onClick={() => navigate(`/list/${id}`)}>
       <R.Img src={img} />
       <R.Info>
         <R.Regular12>{type}</R.Regular12>
-        <R.Semibold12>{price}</R.Semibold12>
+        <R.Semibold12>{title}</R.Semibold12>
         <R.Medium10>
           {region} | {size}
         </R.Medium10>

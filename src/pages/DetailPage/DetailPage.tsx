@@ -75,7 +75,7 @@ const DetailPage = () => {
     <D.DetailPage>
       <D.TopbarContainer>
         <Topbar
-          text={`${homeData?.saleType} ${homeData?.depositRent ? homeData.depositRent : ''}`}
+          text={`${homeData?.title}`}
           style="gradient"
           icon={bookMarkClicked ? BookMarkWhiteOn : BookMarkWhiteOff}
           onClickIcon={handleScrap}
@@ -88,7 +88,9 @@ const DetailPage = () => {
           <D.SheetContent>
             <D.Header>
               <D.Title>
-                <D.Semibold16>{homeData?.dealType} 5억원</D.Semibold16>
+                <D.Semibold16>
+                  {homeData?.dealType} {homeData?.currentDepositRent}
+                </D.Semibold16>
                 <D.Regular12>등록일 {homeData?.postedOn}</D.Regular12>
               </D.Title>
               <D.Info>
