@@ -124,12 +124,10 @@ const DetailPage = () => {
                 <D.Regular14 style={{ whiteSpace: 'pre-line' }}>{homeData?.etc}</D.Regular14>
               </D.Detail>
             )}
-            {homeData?.phoneNum && (
-              <D.Detail>
-                <D.Semibold14>연락처</D.Semibold14>
-                <D.Regular14>{homeData?.phoneNum}</D.Regular14>
-              </D.Detail>
-            )}
+            <D.Detail>
+              <D.Semibold14>연락처</D.Semibold14>
+              <D.Regular14>{homeData?.phoneNum || '관할 기관에 연락해주세요.'}</D.Regular14>
+            </D.Detail>
           </D.SheetContent>
         </D.SheetScroll>
       </D.Sheet>
