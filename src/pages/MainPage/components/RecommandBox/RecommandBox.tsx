@@ -8,10 +8,9 @@ interface RegionButtonProps {
   title: string;
   region: string;
   size: string;
-  tag: string[];
 }
 
-const RecommandBox = ({ id, img, type, title, region, size, tag }: RegionButtonProps) => {
+const RecommandBox = ({ id, img, type, title, region, size }: RegionButtonProps) => {
   const navigate = useNavigate();
   return (
     <R.RecommandBox onClick={() => navigate(`/list/${id}`)}>
@@ -22,11 +21,6 @@ const RecommandBox = ({ id, img, type, title, region, size, tag }: RegionButtonP
         <R.Medium10>
           {region} | {size}
         </R.Medium10>
-        <R.Tags>
-          {tag.map((t, idx) => (
-            <R.Tag key={idx}>#{t}</R.Tag>
-          ))}
-        </R.Tags>
       </R.Info>
     </R.RecommandBox>
   );
