@@ -4,6 +4,7 @@ export type RequestRegisterDto = {
   address: string;
   dealType: string;
   saleType: string;
+  priceType: string;
   imageUrls: string[];
   title: string;
   depositRent: string;

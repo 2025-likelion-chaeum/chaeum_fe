@@ -39,6 +39,38 @@ export const Group = styled.div`
   margin: 16px;
 `;
 
+export const PriceGroup = styled.div`
+  width: calc(100% - 32px);
+  margin: 16px;
+
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  background-color: ${palette.grayscale.white};
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const PriceBox = styled.div`
+  width: 100%;
+  height: 36px;
+
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid ${palette.grayscale.de};
+  background-color: ${palette.grayscale.white};
+
+  color: ${palette.grayscale.base};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
 export const Bold18 = styled.div`
   font-size: 18px;
   font-weight: 700;
