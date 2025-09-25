@@ -167,7 +167,7 @@ const UploadPage = () => {
 
       const response = await RegisterHome(requestData, requestImageData);
 
-      navigate(`/list/${response.data.id}`);
+      navigate(`/list/${response.data.id}`, { state: { from: '/upload' } });
     } catch (error) {
       console.error(error);
     }

@@ -14,6 +14,8 @@ import LeftArrow from '@assets/icon-arrow-left.svg?react';
  *   - 'border' : 하단에 border 표시
  *   - 'gradient' : 배경이 gradient
  *
+ * @param {boolean'} goHome -- navigate시 메인으로 이동할 지 / 필수 X
+
  * ex) <Topbar text="전국의 빈집들" style="border" />
  *
  * @author 김진효
@@ -24,14 +26,23 @@ interface TopbarProps {
   icon?: string;
   onClickIcon?: () => void;
   style: 'none' | 'border' | 'gradient';
+  goHome?: boolean;
 }
 
-const Topbar = ({ text, icon, onClickIcon, style }: TopbarProps) => {
+const Topbar = ({ text, icon, onClickIcon, style, goHome }: TopbarProps) => {
   const navigate = useNavigate();
+
+  const handleClickLeftArrow = () => {
+    if (goHome) {
+      navigate('/');
+    } else {
+      navigate(-1);
+    }
+  };
 
   return (
     <T.Topbar $style={style}>
-      <LeftArrow onClick={() => navigate(-1)} />
+      <LeftArrow onClick={handleClickLeftArrow} />
       <T.Text $style={style}>{text}</T.Text>
       {icon && (
         <T.Icon onClick={onClickIcon}>
