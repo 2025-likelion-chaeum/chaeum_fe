@@ -181,6 +181,18 @@ const MapPage = () => {
           },
         ];
 
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            const locPosition = new window.kakao.maps.LatLng(lat, lon);
+            map.setCenter(locPosition);
+          });
+        } else {
+          console.error('지원되지 않는 브라우저입니다.');
+        }
+
         mapData?.forEach((loc) => {
           geocoder.addressSearch(loc?.address, function (result: KakaoResult[], status: KakaoStatus) {
             if (status === window.kakao.maps.services.Status.OK) {
