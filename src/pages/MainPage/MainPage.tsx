@@ -98,7 +98,6 @@ const MainPage = () => {
                 title={item.title || '미정'}
                 region={item.address}
                 size={item.area || '불확실'}
-                tag={[]}
               />
             ))}
           </M.ReccomandList>
