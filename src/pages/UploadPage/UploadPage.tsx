@@ -23,7 +23,7 @@ type AddressData = {
 
 const UploadPage = () => {
   const navigate = useNavigate();
-  const [state, setState] = useState<number>(2);
+  const [state, setState] = useState<number>(1);
   const progress = Math.floor((state / 3) * 100);
   const [addressModal, setAddressModal] = useState(false);
   const [toast, setToast] = useState<string | null>(null);

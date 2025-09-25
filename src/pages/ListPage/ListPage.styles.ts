@@ -8,6 +8,8 @@ export const ListPage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 28px;
+
+  overflow-y: hidden;
 `;
 
 export const HomeList = styled.div`
@@ -29,7 +31,7 @@ export const Medium14 = styled.div`
 `;
 
 export const NoneDataInfo = styled.div`
-  height: calc(100dvh - 76px);
+  height: calc(100dvh - 145px);
   display: flex;
   flex-direction: column;
   align-items: center;

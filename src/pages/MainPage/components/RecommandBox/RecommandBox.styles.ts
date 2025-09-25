@@ -28,6 +28,7 @@ export const HomeImg = styled.img`
 `;
 
 export const Img = styled.img`
+  width: 192px;
   height: 160px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -62,27 +63,10 @@ export const Semibold12 = styled.div`
 export const Medium10 = styled.div`
   overflow: hidden;
   color: ${palette.grayscale['5e']};
+  white-space: nowrap;
   text-overflow: ellipsis;
 
   font-size: 10px;
   font-weight: 500;
   line-height: 140%;
-`;
-
-export const Tags = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-  margin-top: 4px;
-`;
-
-export const Tag = styled.div`
-  color: ${palette.grayscale.white};
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 140%;
-
-  padding: 2px 6px;
-  border-radius: 4px;
-  background-color: ${palette.grayscale['5e']};
 `;

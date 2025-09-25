@@ -1,16 +1,10 @@
 import type { CommonResponse } from '../common';
 
-// 지도 필터링
-export type PriceRange = {
-  min: number;
-  max: number | null;
-};
-
 export type RequestMapDto = {
   region: null | string;
   saleTypes: string[];
   dealTypes: string[];
-  priceRanges: PriceRange[];
+  priceTypes: string[];
   userOnly: boolean;
   page: number;
   size: number;

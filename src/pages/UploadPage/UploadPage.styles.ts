@@ -123,7 +123,7 @@ export const PhotoGroup = styled.div`
   flex-direction: row;
   gap: 8px;
   overflow-x: scroll;
-  height: 135px;
+  height: 150px;
   align-items: end;
 `;
 
@@ -137,7 +137,7 @@ export const UploadPhoto = styled.label`
   border-radius: 8px;
   border: 1px solid ${palette.grayscale.de};
   position: relative;
-  bottom: 2.5px;
+  bottom: 3.5px;
   cursor: pointer;
 `;
 

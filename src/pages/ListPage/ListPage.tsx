@@ -44,13 +44,13 @@ const ListPage = () => {
     단기: 'SHORTTERM',
   };
 
-  const PRICE_RANGE_MAP: Record<string, { min: number; max: number | null }> = {
-    '천만원 미만': { min: 0, max: 10000000 },
-    '천만원 이상 5천만원 미만': { min: 10000000, max: 50000000 },
-    '5천만원 이상 1억원 미만': { min: 50000000, max: 100000000 },
-    '1억원 이상 5억원 미만': { min: 100000000, max: 500000000 },
-    '5억원 이상 10억원 미만': { min: 500000000, max: 1000000000 },
-    '10억원 이상': { min: 1000000000, max: null },
+  const PRICE_RANGE_MAP: Record<string, string> = {
+    '천만원 미만': 'UNDER_10M',
+    '천만원 이상 5천만원 미만': 'BETWEEN_10M_50M',
+    '5천만원 이상 1억원 미만': 'BETWEEN_50M_100M',
+    '1억원 이상 5억원 미만': 'BETWEEN_100M_500M',
+    '5억원 이상 10억원 미만': 'BETWEEN_500M_1000M',
+    '10억원 이상': 'OVER_1000M',
   };
 
   const [housesData, setHousesData] = useState<House[]>([]);
@@ -63,7 +63,7 @@ const ListPage = () => {
               region: text === '전국' ? null : text,
               saleTypes: selectedCategories.map((t) => SALE_TYPE_MAP[t]),
               dealTypes: selectedMethods.map((m) => DEAL_TYPE_MAP[m]),
-              priceRanges: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
+              priceTypes: selectedPrices.map((p) => PRICE_RANGE_MAP[p]),
               userOnly: false,
               page: 0,
               size: 80,
@@ -91,7 +91,7 @@ const ListPage = () => {
   const method = ['매매', '임대', '전세', '월세', '단기'];
 
   const price = [
-    '천만원 이상',
+    '천만원 미만',
     '천만원 이상 5천만원 미만',
     '5천만원 이상 1억원 미만',
     '1억원 이상 5억원 미만',
@@ -166,7 +166,7 @@ const ListPage = () => {
                 id={item.id}
                 img={(item.imageUrls && item.imageUrls[0]) || item.thumbnailUrl || defaultImg}
                 type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
-                price={item.depositRent || '미정'}
+                title={item.title || '미정'}
                 region={item.address}
                 size={item.area || '불확실'}
               />
