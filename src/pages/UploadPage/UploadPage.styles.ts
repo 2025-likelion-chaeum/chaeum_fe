@@ -201,6 +201,8 @@ export const Textarea = styled.textarea`
   outline: none;
 
   color: ${palette.grayscale.base};
+
+  font-family: 'Pretendard';
   font-size: 14px;
   font-weight: 500;
   line-height: 140%;
