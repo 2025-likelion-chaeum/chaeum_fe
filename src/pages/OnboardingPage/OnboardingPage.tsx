@@ -110,7 +110,7 @@ const OnboardingPage = () => {
             </O.Label>
           </O.Section>
 
-          {watchPurpose && (
+          {(watchPurpose === 'BUY' || watchPurpose === 'BOTH') && (
             <>
               <O.Section>
                 <O.Title>이 빈집을 어떤 목적으로 활용하고 싶으신가요?</O.Title>
@@ -158,7 +158,7 @@ const OnboardingPage = () => {
               text="시작하기"
               type="submit"
               onClick={handleSubmit(onSubmit)}
-              disabled={!watchPurpose || watchUtilize.length === 0}
+              disabled={(watchPurpose === 'BUY' || watchPurpose === 'BOTH') && watchUtilize.length === 0}
             />
           </O.ButtonWrapper>
         </O.OnboardingPage>
