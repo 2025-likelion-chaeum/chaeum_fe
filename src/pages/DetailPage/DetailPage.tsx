@@ -1,7 +1,7 @@
 import * as D from './DetailPage.styles';
 import Topbar from '@/components/Topbar/Topbar';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import DetailItem from './components/DetailItem';
 import { getDetail, scrap, deleteScrap } from '@/apis/Detail/detail';
 import type { ResponseDetailDto } from '@/types/Detail/detail';
@@ -32,6 +32,8 @@ const DetailPage = () => {
   const [homeData, setHomeData] = useState<ResponseDetailDto['data'] | null>(null);
 
   const [bookMarkClicked, setBookMarkClicked] = useState<boolean>(false);
+
+  const location = useLocation();
 
   useEffect(() => {
     if (!id) return;
@@ -79,6 +81,7 @@ const DetailPage = () => {
           style="gradient"
           icon={bookMarkClicked ? BookMarkWhiteOn : BookMarkWhiteOff}
           onClickIcon={handleScrap}
+          goHome={location.state?.from === '/upload'}
         />
       </D.TopbarContainer>
       <D.Image src={homeData?.imageUrls[0]} />
