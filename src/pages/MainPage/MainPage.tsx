@@ -114,19 +114,17 @@ const MainPage = () => {
           </M.Regular12>
         </M.Title>
         <M.HomeList>
-          {HomeData.slice()
-            .reverse()
-            .map((item) => (
-              <HomeItem
-                key={item.id}
-                id={item.id}
-                img={item.imageUrls[0]}
-                type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
-                title={item.title || '미정'}
-                region={item.address}
-                size={item.area || '불확실'}
-              />
-            ))}
+          {HomeData.slice().map((item) => (
+            <HomeItem
+              key={item.id}
+              id={item.id}
+              img={item.imageUrls[0]}
+              type={SALE_TYPE_REVERSE_MAP[item.saleType] || item.saleType}
+              title={item.title || '미정'}
+              region={item.address}
+              size={item.area || '불확실'}
+            />
+          ))}
         </M.HomeList>
       </M.Group>
     </M.MainPage>
